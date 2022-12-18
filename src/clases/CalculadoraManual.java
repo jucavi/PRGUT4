@@ -61,19 +61,38 @@ public class CalculadoraManual {
      * @param numero Número entero
      * @return int Número de dígitos
      */
-    private static int obtenerNDigitos(int numero) {
+    private static int obtenerOrden(int numero) {
         
-        int longitud = 0;
+        int orden = 0;
         
-        do {   
+         while (numero != 0) {   
             numero /= 10;
-            longitud = sumar(longitud, 1);
+            orden = sumar(orden, 1);
             
-        } while (numero != 0);
+        }
         
-        return longitud;
+        return orden;
     }
-
+    
+    /**
+     * Retorna el número siguiente al pasado como parámetro
+     * 
+     * @param numer Número entero
+     * @return int numero + 1
+     */
+    private static int incrementar(int numero) {
+        return sumar(numero, 1);
+    }
+    
+    /**
+     * Retorna el número anterior al pasado como parámetro
+     * 
+     * @param numer Número entero
+     * @return int numero - 1
+     */
+    private static int decrementar(int numero) {
+        return restar(numero, 1);
+    }
     
     
     public static void sumarMenu(int sumando1, int sumando2) {
@@ -202,7 +221,7 @@ public class CalculadoraManual {
             acarreo = ultimoDigMinuendo / 10;
             
             // Incrementa el exponente
-            exponente = sumar(exponente, 1);
+            exponente = incrementar(exponente);
         }
         
         // Retorna el resultado de la resta
@@ -254,7 +273,7 @@ public class CalculadoraManual {
             multiplicacionFinal = sumar(multiplicacionFinal,  multiplicacionParcial);
             
             // Incrementa el exponente
-            exponente = sumar(exponente, 1);
+            exponente = incrementar(exponente);
         }
         
         // Retorna el resultado de la multiplicación
@@ -275,69 +294,74 @@ public class CalculadoraManual {
         // Si el dividendo es cero lanza una exepción 
         if (divisor == 0) throw new ArithmeticException("La división por cero no está permitida");
         
-        // Unidad del ´digito en el que esta trabajando la iteración (unidad, décima, ..) 
-        int exponente = 0;
-        
-        // Resto de la operación
-        int resto = 0;
+        // Si el dividendo no esta contenido en el divisor devolvemos 0 como resultado
+        if (divisor > dividendo) return 0;
         
         // Valor a retornar por el método
         int cociente = 0;
         
-        // Itera mientras el dividendo no sea cero y aún quedan dígitos en los que operar)
-        while (dividendo != 0 || exponente >= 0) {
-            
-            // Obtiene la cantidad de dígitos que contiene el dividendo
-            int numDigDividendo = obtenerNDigitos(dividendo);
-            
-            // A partir de esa cantidad se obtiene el orden sobre el que se va a operar
-            exponente = restar(numDigDividendo, 1);
+        // Exponente del orden de magnitud de un número
+        int exponente = obtenerOrden(dividendo);
+        
+        // Resto de la operación, se inicializa con el dígito mas significativo del dividendo
+        int resto = dividendo / (int) potenciarBase10(exponente);
+        
+        // Actulizamos el exponente
+        exponente = decrementar(exponente);
+        
+        // Itera mientras aún quedan dígitos en los que operar
+        while (exponente >= 0) {
             
             // Almacena la cantida de veces que está contenido el dividendo en el grupo
             // de digitos seleccionado
-            int estaConenido = 0;
+            int contiene = 0;
             
-            do {
-                // Si hay resto de la iteración anterior aumentamos un orden de magnitud
+            // itera siempre que el resto sea menor que el divisor y queden dígitos
+            // por recorrer en el dividendo
+            while (resto < divisor && exponente >= 0) {
+                
+                // Si hay resto de la iteración anterior o aumentamos un orden de magnitud
                 // para agregar el siguiente dígito a operar del dividendo
                 resto *= 10;
                 
-                // Obtiene el dígito mas significativo del dividendo
-                int primerDigDividendo = dividendo / (int) potenciarBase10(exponente);
+                /* 
+                    En dividendos con ceros intermedios (ej. 20001) la obtencion 
+                del dígito con el que trabajar en la iteración no es posible hacerla 
+                como se ha venido realizando hasta ahora.
+                    
+                    La obtención se realizará dividiendo e dividendo por el orden de
+                magnitud correspondiente al dígito que se busca y si el resultado
+                obtenido es mayor que 9 nos quedamos con el dígito menos significativo
+                del resultado
+                */ 
+                int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
+                int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
                 
                 // Suma al resto el dígito anterior
-                resto = sumar(resto, primerDigDividendo);
+                resto = sumar(resto, digito);
                 
-                // Condición finalizadora del while
-                // Actualiza el dividendo con los dígitos sobre los que aún no se ha operado
-                dividendo %= (int) potenciarBase10(exponente);
-                
-                // GRAN PROBLEMA CON LOS CEROS!!!!!!!!!!!!!!
-                
-                // Actauliza el exponente
-                // Si el exponente es menor que cero significa que ya hemos recorrido
-                // todo el divisor
-                // Condición de finalizacion del do-while
-                exponente = restar(exponente, 1);
-                
-                // Agrega
-                if (resto < dividendo) {
+                //
+                if (resto < divisor && exponente > 0) {
                     cociente *= 10;
                 }
                 
-            // Itera mientras el resto no contenga al divisor
-            } while (resto <= divisor && exponente >= 0);
+                // Actauliza el exponente
+                // Si el exponente es menor que 0 significa que ya hemos recorrido
+                // todo el divisor
+                // Condición de finalizacion del while
+                exponente = decrementar(exponente);
+            } 
             
             
             // Obtiene cuantas veces esta contenido el divisor en el resto y actualiza
             // el valor del resto para la siguiente iteración
             while (resto >= divisor) {
                 resto = restar(resto, divisor);
-                estaConenido = sumar(estaConenido, 1);
+                contiene = incrementar(contiene);
             }
             
             // Añade al cociente el nuevo valor obtenido
-            cociente = sumar(cociente * 10, estaConenido);
+            cociente = sumar(cociente * 10, contiene);
             
         }
         

@@ -14,8 +14,8 @@ public class Principal {
     
     public static void main(String[] args) {
         
-        int numero1 = 2400010;
-        int numero2 = 10;
+        int numero1 = 1001;
+        int numero2 = 10000;
         
         CalculadoraManual.sumarMenu(numero1, numero2);
         System.out.println("Suma: " + numero1 + " + " + numero2);
