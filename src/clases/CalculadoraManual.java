@@ -294,7 +294,8 @@ public class CalculadoraManual {
     public static void multiplicarMenu(int multiplicando, int multiplicador) {
         
         int multiplicacionFinal = 0;
-        int exponente = sumar(obtenerLongitud(multiplicador), -1);
+        // Partimos de un exponente un orden menor a la cantidad de dígitos contenidos en el multiplicador
+        int exponente = decrementar(obtenerLongitud(multiplicador));
         
         cabeceraOperacion('*', multiplicando, multiplicador);
         
@@ -488,6 +489,9 @@ public class CalculadoraManual {
         //  TODO comprobar que no haya resultado negativo overflow
         return multiplicacionFinal;
     }
+    
+    // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
+    // No queria borrar un código que funcionaba
     
     /**
      * Retorna el cociente de la división de dos números enteros positivos
