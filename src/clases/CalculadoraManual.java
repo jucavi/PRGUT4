@@ -15,6 +15,66 @@ public class CalculadoraManual {
     
     
     // Métodos auxiliares
+    /**
+     * Imprime por pantalla una linea conformada por el caracter y de la longitud
+     * pasados como parámetro
+     * 
+     * @param longitud
+     * @param caracter
+     */
+    private static void printNChar(int longitud, char caracter) {
+        for (int i = 0; i < longitud; i++) {
+            System.out.print(caracter);
+        }
+        System.out.println();
+    }
+    
+    /**
+     * Cabecera común de las operaciones suma, resta, multiplicación y división
+     * 
+     * Ejemplo: 
+     *  operador: '+'
+     *  num1: 1999
+     *  num2: 105001
+     * 
+     * Salida:
+     * 
+     * Cálculo de la Suma:
+     * 
+     *          105001
+     * +          1999
+     * ---------------        
+     * 
+     * @param operador Simbolo mátematico de la opración {+, -, *, /}
+     * @param num1 Número que aparece encima
+     * @param num2 Número que aparece debajo
+     */
+    private static void cabeceraOperacion(char operador, int num1, int num2) {
+        
+                
+        int maxNum = (num1 > num2) ? num1 : num2;
+        int minNum = (num1 < num2) ? num1 : num2;   
+        String opToString = "";
+        
+        final int LONG_FILA = 15;
+        final int MAX_DIGITOS = obtenerLongitud(num2);
+        final int ESPACIOS_IZQ = LONG_FILA - MAX_DIGITOS;
+        final int ESPACIOS_OP = ESPACIOS_IZQ - 1;
+        
+        switch (operador) {
+            case '+' -> opToString = "Suma";
+            case '-' -> opToString = "Resta";
+            case '*' -> opToString = "Multiplicaión";
+            case '/' -> opToString = "División";
+                
+            default -> System.out.println("Compruebe que utiliza uno de estos caracteres (+, -, /, *)");
+        }
+        
+        System.out.printf("Cálculo de la %s:\n\n", opToString);
+        System.out.printf("%" + ESPACIOS_IZQ + "s" + "%d%n", " ",  maxNum);
+        System.out.printf("+" + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  minNum);
+        printNChar(LONG_FILA, '-');
+    }
     
     /**
      * Retorna el valor del primer argumento elevado a la potencia del segundo argumento.
@@ -47,7 +107,7 @@ public class CalculadoraManual {
      * Retorna el valor de 10 elevado a la potencia del argumento.
      * 
      * @param exponente El exponente
-     * @return int 10 elevado al exponente
+     * @return int 10^exponente
      */
     private static double potenciarBase10(int exponente) {
         return potenciar(10, exponente);
@@ -55,21 +115,20 @@ public class CalculadoraManual {
     
     
     /**
-     * Retorna la cantidad de dígitos que componen un número entero
-     * Se considera que 0 tiene un dígito
+     * Retorna la cantidad de digitos que tiene la representación de un número entero
      * 
      * @param numero Número entero
-     * @return int Número de dígitos
+     * @return int Longitud de la representación de un nñumero entero 
      */
-    private static int obtenerOrden(int numero) {
+    private static int obtenerLongitud(int numero) {
         
         int orden = 0;
         
-         while (numero != 0) {   
+         do {   
             numero /= 10;
             orden = sumar(orden, 1);
             
-        }
+        } while (numero != 0);
         
         return orden;
     }
@@ -94,13 +153,71 @@ public class CalculadoraManual {
         return restar(numero, 1);
     }
     
-    
+    /**
+     * Salida por pantalla detallando paso a paso el algoritmo para la operación
+     * suma de forma manual
+     * 
+     * @param sumando1 Número entero
+     * @param sumando2 Numero entero
+     */
     public static void sumarMenu(int sumando1, int sumando2) {
-        System.out.println(sumar(sumando1, sumando2));
+        
+        // La operación de suma comienza con acarreo cero
+        int acarreo = 0;
+        int exponente = 0;
+        // Resultado de la susumando2ma
+        int sumaFinal = 0;
+        
+        cabeceraOperacion('+', sumando1, sumando2);
+
+        while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
+              
+            // Almacena la suma de los dígitos
+            int sumaDigitos;
+           
+            int digitoSumando1 = sumando1 % 10;
+            int digitoSumando2 = sumando2 % 10;
+            
+            System.out.printf("Sumamos %d mas %d", digitoSumando1, digitoSumando2);
+            if (acarreo == 0) {
+                System.out.print(".");
+            } else {
+                System.out.printf(" y %d que me llevaba.", acarreo);
+            }
+            
+            // Condiciónes finalizadoras del while
+            sumando1 /= 10;
+            sumando2 /= 10;
+
+            // Suma de digitos teniendo en cuenta el acarreo de la operación anterior
+            sumaDigitos = digitoSumando1 + digitoSumando2 + acarreo;
+            
+            acarreo = sumaDigitos / 10;
+            sumaDigitos = sumaDigitos % 10;
+            
+            System.out.printf(" Nos da %d", sumaDigitos);
+            if (acarreo == 0) {
+                System.out.print(".\n");
+            } else {
+                System.out.printf(" y me llevo %d.%n", acarreo);
+            }
+            
+            // Suma el resultado teniendo en cuenta las unidades
+            sumaFinal += sumaDigitos * (int) potenciarBase10(exponente);
+            
+            exponente++;
+        }
+        System.out.printf("%nSuma Total: %d%n%n", sumaFinal);
     }
 
+     /**
+     * Salida por pantalla detallando paso a paso la operación de resta
+     * 
+     * @param sumando1 Número entero
+     * @param sumando2 Numero entero
+     */
     public static void restarMenu(int minuendo, int sustraendo) {
-        System.out.println(restar(minuendo, sustraendo));
+        
     }
 
     public static void multiplicarMenu(int multiplicando, int multiplicador) {
@@ -120,10 +237,10 @@ public class CalculadoraManual {
      */
     private static int sumar(int sumando1, int sumando2) {
         
-        // La operación de resta comienza con acarreo cero
+        // La operación de suma comienza con acarreo cero
         int acarreo = 0;
         
-        // Unidad del ´digito en el que esta trabajando la iteración (unidad, décima, ..)
+        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
         
         // Valor final de la suma a retornar por el método
@@ -135,7 +252,7 @@ public class CalculadoraManual {
             
             // Almacena la suma de los dígitos
             int sumaDigitos;
-            
+           
             // Obtiene el dígito menos significativo de ambos sumandos
             int digitoSumando1 = sumando1 % 10;
             int digitoSumando2 = sumando2 % 10;
@@ -177,7 +294,7 @@ public class CalculadoraManual {
         // La operación de resta comienza con acarreo cero
         int acarreo = 0;
         
-        // Unidad del ´digito en el que esta trabajando la iteración (unidad, décima, ..)
+        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
         
         // Valor final de la resta a retornar por el método
@@ -301,7 +418,7 @@ public class CalculadoraManual {
         int cociente = 0;
         
         // Exponente del orden de magnitud de un número
-        int exponente = obtenerOrden(dividendo);
+        int exponente = obtenerLongitud(dividendo);
         
         // Resto de la operación, se inicializa con el dígito mas significativo del dividendo
         int resto = dividendo / (int) potenciarBase10(exponente);
