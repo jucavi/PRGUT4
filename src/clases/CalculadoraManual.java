@@ -53,22 +53,23 @@ public class CalculadoraManual {
         
         String opToString = "OPERACION";
         
+        int maxNum = (num1 > num2) ? num1 : num2;
         final int LONG_FILA = 15;
-        final int MAX_DIGITOS = obtenerLongitud(num1);
+        final int MAX_DIGITOS = obtenerLongitud(maxNum);
         final int ESPACIOS_IZQ = LONG_FILA - MAX_DIGITOS;
         final int ESPACIOS_OP = ESPACIOS_IZQ - 1;
         
         switch (operador) {
-            case '+' -> {
-                opToString = "Suma";
+            case '+' ->  opToString = "Suma";
+            case '-' -> opToString = "Resta";
+            case '*' -> {
+                opToString = "Multiplicaión";
                 if (num1 < num2) {
                     int temp = num1;
                     num1 = num2;
                     num2 = temp;
                 }
             }
-            case '-' -> opToString = "Resta";
-            case '*' -> opToString = "Multiplicaión";
             case '/' -> opToString = "División";
                 
             default -> System.out.println("Compruebe que utiliza uno de estos caracteres (+, -, /, *)");
@@ -76,7 +77,7 @@ public class CalculadoraManual {
         
         System.out.printf("Cálculo de la %s:\n\n", opToString);
         System.out.printf("%" + ESPACIOS_IZQ + "s" + "%d%n", " ",  num1);
-        System.out.printf("+" + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  num2);
+        System.out.printf(operador + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  num2);
         printNChar(LONG_FILA, '-');
     }
     
@@ -158,7 +159,7 @@ public class CalculadoraManual {
     
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "suma" de forma manual
+     * "suma" de números enteros de forma manual
      * 
      * @param sumando1 Primer sumando de la operación
      * @param sumando2 Segundo sumando de la operación
@@ -213,9 +214,11 @@ public class CalculadoraManual {
         System.out.printf("%nSuma Total: %d%n%n", sumaFinal);
     }
 
-     /**
+    /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "resta" de forma manual
+     * "resta" de números naturales de forma manual.
+     * 
+     * VÁLIDO SOLO PARA VALORES DE: minuendo >= sustraendo
      * 
      * @param minuendo Minuendo de la operación
      * @param sustraendo Sustraendo de la operación
@@ -281,8 +284,52 @@ public class CalculadoraManual {
         
     }
 
+    /**
+     *  Salida por pantalla detallando paso a paso el algoritmo para la operación
+     * "multiplicacion" de números naturales de forma manual
+     * 
+     * @param multiplicando Número natural
+     * @param multiplicador Numero natural
+     */
     public static void multiplicarMenu(int multiplicando, int multiplicador) {
-        System.out.println(multiplicar(multiplicando, multiplicador));
+        
+        int multiplicacionFinal = 0;
+        int exponente = sumar(obtenerLongitud(multiplicador), -1);
+        
+        cabeceraOperacion('*', multiplicando, multiplicador);
+        
+        // Itera sombre cada dígito del multiplicador
+        for (int i = exponente; i >= 0 ; i--) {
+            
+            int multiplicacionParcial = 0;
+            int orden = (int) potenciarBase10(i);
+            int digitoMultiplicador = multiplicador / orden;
+            
+            String vezVeces = (digitoMultiplicador == 1) ? "vez" : "veces";
+            String posicionEs = (i == 1) ? "posición" : "posiciones";
+            
+            multiplicador %= orden;
+            
+            // Calcula la multiplicación parcial aplicando la suma
+            for (int j = 0; j < digitoMultiplicador; j++) {
+                multiplicacionParcial = sumar(multiplicacionParcial, multiplicando);
+            }
+            
+            System.out.printf("%d sumado consigo mismo %d %s es %d", multiplicando, digitoMultiplicador, vezVeces, multiplicacionParcial);
+            if (i != 0) {
+                System.out.printf(" desplazamos %d %s", i, posicionEs);
+            }
+            multiplicacionParcial *= orden;
+            System.out.printf(" %d.%n", multiplicacionParcial);
+            
+            if (multiplicacionFinal != 0) {
+                System.out.printf("Sumamos %d a %d%n", multiplicacionParcial, multiplicacionFinal);
+            }
+            multiplicacionFinal = sumar(multiplicacionFinal, multiplicacionParcial);
+            
+        }
+        
+        System.out.printf("%nMultiplicación Total: %d%n", multiplicacionFinal);
     }
 
     public static void dividirMenu(int dividendo, int divisor) {
@@ -336,8 +383,8 @@ public class CalculadoraManual {
 
     
     /**
-     * Retorna la resta de dos números para valores del minuendo mayores o iguales
-     * que el sustraendo
+     * Retorna la resta de dos números enteros simpre que el orden de magnitud
+     * del minuendo sea mayor o igual que el del sustraendo
      * 
      * @param minuendo El minuendo
      * @param sustraendo El sustraendo
@@ -399,7 +446,7 @@ public class CalculadoraManual {
      */
     private static int multiplicar(int multiplicando, int multiplicador) {
         
-        // Unidad del ´digito en el que esta trabajando la iteración (unidad, décima, ..)
+        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
         
         // Almacena el resultado final de la multiplicación que será retornado
