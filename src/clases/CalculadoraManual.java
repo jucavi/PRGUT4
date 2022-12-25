@@ -50,14 +50,8 @@ public class CalculadoraManual {
      * @param num2 Número que aparece debajo
      */
     private static void cabeceraOperacion(char operador, int num1, int num2) {
- 
-        if (num1 < num2) {
-            int temp = num1;
-            num1 = num2;
-            num2 = temp;
-        }
         
-        String opToString = "";
+        String opToString = "OPERACION";
         
         final int LONG_FILA = 15;
         final int MAX_DIGITOS = obtenerLongitud(num1);
@@ -66,9 +60,13 @@ public class CalculadoraManual {
         
         switch (operador) {
             case '+' -> {
-                        opToString = "Suma";
-
-                    }
+                opToString = "Suma";
+                if (num1 < num2) {
+                    int temp = num1;
+                    num1 = num2;
+                    num2 = temp;
+                }
+            }
             case '-' -> opToString = "Resta";
             case '*' -> opToString = "Multiplicaión";
             case '/' -> opToString = "División";
@@ -276,7 +274,6 @@ public class CalculadoraManual {
             // Actuliza la resta, teniendo en cuenta la potencia de los dígitos
             restaDigitos = restaDigitos * (int) potenciarBase10(exponente);
             restaFinal = sumar(restaFinal, restaDigitos);
-            System.out.println(restaFinal);
             
             exponente = incrementar(exponente);
         }
@@ -334,13 +331,13 @@ public class CalculadoraManual {
             exponente++;
         }
         
-        // Retorna el resultado de la suma
         return sumaFinal;
     }
 
     
     /**
-     * Retorna la resta de dos números
+     * Retorna la resta de dos números para valores del minuendo mayores o iguales
+     * que el sustraendo
      * 
      * @param minuendo El minuendo
      * @param sustraendo El sustraendo
@@ -389,7 +386,6 @@ public class CalculadoraManual {
             exponente = incrementar(exponente);
         }
         
-        // Retorna el resultado de la resta
         return restaFinal;
     }
     
