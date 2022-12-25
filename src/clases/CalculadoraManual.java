@@ -113,7 +113,6 @@ public class CalculadoraManual {
         return potenciar(10, exponente);
     }
     
-    
     /**
      * Retorna la cantidad de digitos que tiene la representación de un número entero
      * 
@@ -155,10 +154,10 @@ public class CalculadoraManual {
     
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * suma de forma manual
+     * "suma" de forma manual
      * 
-     * @param sumando1 Número entero
-     * @param sumando2 Numero entero
+     * @param sumando1 Primer sumando de la operación
+     * @param sumando2 Segundo sumando de la operación
      */
     public static void sumarMenu(int sumando1, int sumando2) {
         
@@ -211,10 +210,11 @@ public class CalculadoraManual {
     }
 
      /**
-     * Salida por pantalla detallando paso a paso la operación de resta
+     * Salida por pantalla detallando paso a paso el algoritmo para la operación
+     * "resta" de forma manual
      * 
-     * @param sumando1 Número entero
-     * @param sumando2 Numero entero
+     * @param minuendo Minuendo de la operación
+     * @param sustraendo Sustraendo de la operación
      */
     public static void restarMenu(int minuendo, int sustraendo) {
         
@@ -239,18 +239,14 @@ public class CalculadoraManual {
         
         // La operación de suma comienza con acarreo cero
         int acarreo = 0;
-        
-        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
-        
         // Valor final de la suma a retornar por el método
         int sumaFinal = 0;
 
-        // El proceso de suma será realizado mientras queden digitos en alúgn 
-        // sumando o haya un acarreo pendiente
+        // Recorre los dígitos de ambos sumandos comenzando por el menos significativo
+        // de ambos ralizando su suma y determinado si hay acarreo
         while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
             
-            // Almacena la suma de los dígitos
             int sumaDigitos;
            
             // Obtiene el dígito menos significativo de ambos sumandos
@@ -262,18 +258,15 @@ public class CalculadoraManual {
             sumando1 /= 10;
             sumando2 /= 10;
 
-            // Suma de digitos teniendo en cuenta el acarreo de la operación anterior
             sumaDigitos = digitoSumando1 + digitoSumando2 + acarreo;
             
-            // Se obtiene el acarreo y el resultado de la suma objetivo
-            // para números menores de 10: acarreo = 0, sumaDigitos = número
+            // Se obtiene el acarreo y el resultado de la suma
             acarreo = sumaDigitos / 10;
             sumaDigitos = sumaDigitos % 10;
             
             // Suma teniendo en cuenta unidades
             sumaFinal += sumaDigitos * (int) potenciarBase10(exponente);
             
-            // Incrementa el exponente
             exponente++;
         }
         
