@@ -50,19 +50,25 @@ public class CalculadoraManual {
      * @param num2 Número que aparece debajo
      */
     private static void cabeceraOperacion(char operador, int num1, int num2) {
+ 
+        if (num1 < num2) {
+            int temp = num1;
+            num1 = num2;
+            num2 = temp;
+        }
         
-                
-        int maxNum = (num1 > num2) ? num1 : num2;
-        int minNum = (num1 < num2) ? num1 : num2;   
         String opToString = "";
         
         final int LONG_FILA = 15;
-        final int MAX_DIGITOS = obtenerLongitud(num2);
+        final int MAX_DIGITOS = obtenerLongitud(num1);
         final int ESPACIOS_IZQ = LONG_FILA - MAX_DIGITOS;
         final int ESPACIOS_OP = ESPACIOS_IZQ - 1;
         
         switch (operador) {
-            case '+' -> opToString = "Suma";
+            case '+' -> {
+                        opToString = "Suma";
+
+                    }
             case '-' -> opToString = "Resta";
             case '*' -> opToString = "Multiplicaión";
             case '/' -> opToString = "División";
@@ -71,8 +77,8 @@ public class CalculadoraManual {
         }
         
         System.out.printf("Cálculo de la %s:\n\n", opToString);
-        System.out.printf("%" + ESPACIOS_IZQ + "s" + "%d%n", " ",  maxNum);
-        System.out.printf("+" + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  minNum);
+        System.out.printf("%" + ESPACIOS_IZQ + "s" + "%d%n", " ",  num1);
+        System.out.printf("+" + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  num2);
         printNChar(LONG_FILA, '-');
     }
     
@@ -103,7 +109,7 @@ public class CalculadoraManual {
         return resultado;
     }
     
-     /**
+    /**
      * Retorna el valor de 10 elevado a la potencia del argumento.
      * 
      * @param exponente El exponente
@@ -218,6 +224,64 @@ public class CalculadoraManual {
      */
     public static void restarMenu(int minuendo, int sustraendo) {
         
+        // La operación de resta comienza con acarreo cero
+        int acarreo = 0;
+        int exponente = 0;
+        
+        // Valor final de la resta a retornar por el método
+        int restaFinal = 0;
+        
+        cabeceraOperacion('-', minuendo, sustraendo);
+        
+        // Recorre los dígitos de ambos números comenzando por el menos significativo
+        // de ambos ralizando su resta y determinado si hay acarreo
+        while (minuendo != 0 || sustraendo != 0 || acarreo != 0) {
+            
+            int restaDigitos;
+
+            int digitoMinuendo = minuendo % 10;
+            int digitoSustraendo = sustraendo % 10;
+            
+            minuendo /= 10;
+            sustraendo /= 10;
+            
+            // Si el resultado en la resta de los dígitos es negativo le sumamos 10
+            // implica acarreo en la siguiente iteración
+            if (digitoMinuendo < digitoSustraendo) {
+                System.out.printf("Como %d es menor que %d sumamos 10 a %1$d. ", digitoMinuendo, digitoSustraendo);
+                digitoMinuendo = sumar(digitoMinuendo, 10);
+            }
+            
+            // Realiza la resta de los dígitos tenieno en cuenta el acarreo 
+            // de la operación anterior
+            digitoSustraendo = sumar(digitoSustraendo, acarreo);
+            restaDigitos = digitoMinuendo - digitoSustraendo;
+            
+            System.out.printf("Restamos %d", digitoSustraendo);
+            if (acarreo != 0) {
+                System.out.printf(" y %d que me llevaba.", acarreo);
+            }
+            System.out.printf(" a %d.", digitoMinuendo);
+            
+            // Si el digito del minuendo es mayor que 9 es necesario el acarreo
+            acarreo = digitoMinuendo / 10;
+            
+            System.out.printf(" Nos da %d", restaDigitos);
+            if (acarreo == 0) {
+                System.out.print(".\n");
+            } else {
+                System.out.printf(" y me llevo %d.%n", acarreo);
+            }
+            
+            // Actuliza la resta, teniendo en cuenta la potencia de los dígitos
+            restaDigitos = restaDigitos * (int) potenciarBase10(exponente);
+            restaFinal = sumar(restaFinal, restaDigitos);
+            System.out.println(restaFinal);
+            
+            exponente = incrementar(exponente);
+        }
+        System.out.printf("%nResta Total: %d%n%n", restaFinal);
+        
     }
 
     public static void multiplicarMenu(int multiplicando, int multiplicador) {
@@ -243,7 +307,7 @@ public class CalculadoraManual {
         // Valor final de la suma a retornar por el método
         int sumaFinal = 0;
 
-        // Recorre los dígitos de ambos sumandos comenzando por el menos significativo
+        // Recorre los dígitos de ambos números comenzando por el menos significativo
         // de ambos ralizando su suma y determinado si hay acarreo
         while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
             
@@ -286,29 +350,21 @@ public class CalculadoraManual {
         
         // La operación de resta comienza con acarreo cero
         int acarreo = 0;
-        
-        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
         
         // Valor final de la resta a retornar por el método
         int restaFinal = 0;
         
-        // El proceso de resta será realizado mientras queden digitos a restar o 
-        // quede algun acarreo pendiente de la iteración anterior
+        // Recorre los dígitos de ambos números comenzando por el menos significativo
+        // de ambos ralizando su resta y determinado si hay acarreo
         while (minuendo != 0 || sustraendo != 0 || acarreo != 0) {
             
-            // Almacena la resta de los dígitos
             int restaDigitos;
             
             // Obtiene el dígito menos significativo del sustraendo y el minuendo
-            //
-            // Como el paso de parámetros es por valor y son datos primitivos podemos
-            // modificarles dentro de los métodos sin que los valores originales
-            // cambien
             int ultimoDigMinuendo = minuendo % 10;
             int ultimoDigSustraendo = sustraendo % 10;
             
-            // Actuliza el minuendo y el sustraendo eliminando el último dígito
             minuendo /= 10;
             sustraendo /= 10;
             
@@ -330,7 +386,6 @@ public class CalculadoraManual {
             // Si el digito del minuendo es mayor que 9 es necesario el acarreo
             acarreo = ultimoDigMinuendo / 10;
             
-            // Incrementa el exponente
             exponente = incrementar(exponente);
         }
         

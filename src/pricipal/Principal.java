@@ -14,14 +14,14 @@ public class Principal {
     
     public static void main(String[] args) {
         
-        int numero1 = 1999;
-        int numero2 = 105001;
+        int numero1 = 121999;
+        int numero2 = 9051;
         
         CalculadoraManual.sumarMenu(numero1, numero2);
         
-        /*
         CalculadoraManual.restarMenu(numero1, numero2);
         
+        /*
         CalculadoraManual.multiplicarMenu(numero1, numero2);
         
         CalculadoraManual.dividirMenu(numero1, numero2);
