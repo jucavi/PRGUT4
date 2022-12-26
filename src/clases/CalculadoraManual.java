@@ -582,9 +582,10 @@ public class CalculadoraManual {
         return multiplicacionFinal;
     }
     
-    // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
-    // No queria borrar un código que funcionaba
     
+    // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
+    //No queria borrar un código que funcionaba
+
     /**
      * Retorna el cociente de la división de dos números enteros positivos
      * 
@@ -593,6 +594,7 @@ public class CalculadoraManual {
      * @return int El cociente de dividendo / divisor
      * @throws ArithmeticException La división por cero no está permitida
      */
+    /*
     private static int dividir(int dividendo, int divisor) throws ArithmeticException {
         
         // Si el dividendo es cero lanza una exepción 
@@ -626,18 +628,16 @@ public class CalculadoraManual {
                 
                 // Si hay resto de la iteración anterior o aumentamos un orden de magnitud
                 // para agregar el siguiente dígito a operar del dividendo
-                resto *= 10;
+                resto *= 10;                
                 
-                /* 
-                    En dividendos con ceros intermedios (ej. 20001) la obtencion 
-                del dígito con el que trabajar en la iteración no es posible hacerla 
-                como se ha venido realizando hasta ahora.
-                    
-                    La obtención se realizará dividiendo e dividendo por el orden de
-                magnitud correspondiente al dígito que se busca y si el resultado
-                obtenido es mayor que 9 nos quedamos con el dígito menos significativo
-                del resultado
-                */ 
+                // En dividendos con ceros intermedios (ej. 20001) la obtencion 
+                // del dígito con el que trabajar en la iteración no es posible hacerla 
+                // como se ha venido realizando hasta ahora.
+                //     
+                // La obtención se realizará dividiendo e dividendo por el orden de
+                // magnitud correspondiente al dígito que se busca y si el resultado
+                // obtenido es mayor que 9 nos quedamos con el dígito menos significativo
+                // del resultado
                 int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
                 int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
                 
@@ -672,5 +672,7 @@ public class CalculadoraManual {
         // Retorna el resultado del cociente de la división entera 
         return cociente;
     }
+    */
+    
     
 }
