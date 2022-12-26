@@ -14,15 +14,15 @@ public class Principal {
     
     public static void main(String[] args) {
         
-        int numero1 = 3;
-        int numero2 = 1129996;
+        int numero1 = 10;
+        int numero2 = 100;
         
-        //CalculadoraManual.sumarMenu(numero1, numero2);
+        CalculadoraManual.sumarMenu(numero1, numero2);
         
-        //CalculadoraManual.restarMenu(numero1, numero2);
+        CalculadoraManual.restarMenu(numero1, numero2);
         
         
-        CalculadoraManual.multiplicarMenu(numero1, numero2);
+        //CalculadoraManual.multiplicarMenu(numero1, numero2);
         
         //CalculadoraManual.dividirMenu(numero1, numero2);
     }

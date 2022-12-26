@@ -46,38 +46,30 @@ public class CalculadoraManual {
      * ---------------        
      * 
      * @param operador Simbolo mátematico de la opración {+, -, *, /}
-     * @param num1 Número que aparece encima
-     * @param num2 Número que aparece debajo
+     * @param num1 Número entero positivo
+     * @param num2 Número entero positivo
      */
     private static void cabeceraOperacion(char operador, int num1, int num2) {
         
-        String opToString = "OPERACION";
+        String operAString = "OPERACION";
         
         int maxNum = (num1 > num2) ? num1 : num2;
         final int LONG_FILA = 15;
         final int MAX_DIGITOS = obtenerLongitud(maxNum);
         final int ESPACIOS_IZQ = LONG_FILA - MAX_DIGITOS;
-        final int ESPACIOS_OP = ESPACIOS_IZQ - 1;
         
         switch (operador) {
-            case '+' ->  opToString = "Suma";
-            case '-' -> opToString = "Resta";
-            case '*' -> {
-                opToString = "Multiplicaión";
-                if (num1 < num2) {
-                    int temp = num1;
-                    num1 = num2;
-                    num2 = temp;
-                }
-            }
-            case '/' -> opToString = "División";
+            case '+' ->  operAString = "Suma";
+            case '-' -> operAString = "Resta";
+            case '*' -> operAString = "Multiplicaión";
+            case '/' -> operAString = "División";
                 
             default -> System.out.println("Compruebe que utiliza uno de estos caracteres (+, -, /, *)");
         }
         
-        System.out.printf("Cálculo de la %s:\n\n", opToString);
-        System.out.printf("%" + ESPACIOS_IZQ + "s" + "%d%n", " ",  num1);
-        System.out.printf(operador + "%" + ESPACIOS_OP + "s" + "%" + MAX_DIGITOS +"d%n", " ",  num2);
+        System.out.printf("Cálculo de la %s:\n\n", operAString);
+        System.out.printf("%" + ESPACIOS_IZQ + "s" + "%" + MAX_DIGITOS + "d%n", " ",  num1);
+        System.out.printf(operador + "%" + (ESPACIOS_IZQ - 1) + "s" + "%" + MAX_DIGITOS + "d%n", " ",  num2);
         printNChar(LONG_FILA, '-');
     }
     
@@ -89,9 +81,7 @@ public class CalculadoraManual {
      * @return int La base elevada al exponente
      */
     private static double potenciar(double base, int exponente) {
-        
-        // Almacena el resultados de multiplicaciones sucesivas de la base
-        // La potenciación con exponente 0 devuelve 1 como resultado
+
         int resultado = 1;
         
         if (exponente < 0) {
@@ -99,8 +89,6 @@ public class CalculadoraManual {
             base = 0.1;
         }
         
-        // Iteracion que realiza la multiplcacion de la base un número de veces
-        // igual al valor que tenga el exponente
         for (int i = 0; i < exponente; i++) {
             resultado *= base;
         }
@@ -128,7 +116,8 @@ public class CalculadoraManual {
         
         int orden = 0;
         
-         do {   
+        // la representación de cero contiene un dígito
+        do {   
             numero /= 10;
             orden = sumar(orden, 1);
             
@@ -138,7 +127,7 @@ public class CalculadoraManual {
     }
     
     /**
-     * Retorna el número siguiente al pasado como parámetro
+     * Retorna el número entero siguiente al pasado como parámetro
      * 
      * @param numer Número entero
      * @return int numero + 1
@@ -148,7 +137,7 @@ public class CalculadoraManual {
     }
     
     /**
-     * Retorna el número anterior al pasado como parámetro
+     * Retorna el número entero anterior al pasado como parámetro
      * 
      * @param numer Número entero
      * @return int numero - 1
@@ -159,7 +148,7 @@ public class CalculadoraManual {
     
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "suma" de números enteros de forma manual
+     * "suma", de números enteros de forma manual
      * 
      * @param sumando1 Primer sumando de la operación
      * @param sumando2 Segundo sumando de la operación
@@ -216,7 +205,7 @@ public class CalculadoraManual {
 
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "resta" de números naturales de forma manual.
+     * "resta", de números naturales de forma manual.
      * 
      * VÁLIDO SOLO PARA VALORES DE: minuendo >= sustraendo
      * 
@@ -249,7 +238,8 @@ public class CalculadoraManual {
             // Si el resultado en la resta de los dígitos es negativo le sumamos 10
             // implica acarreo en la siguiente iteración
             if (digitoMinuendo < digitoSustraendo) {
-                System.out.printf("Como %d es menor que %d sumamos 10 a %1$d. ", digitoMinuendo, digitoSustraendo);
+                System.out.printf("Como %d es menor que %d sumamos 10 a %1$d. ", 
+                        digitoMinuendo, digitoSustraendo);
                 digitoMinuendo = sumar(digitoMinuendo, 10);
             }
             
@@ -286,7 +276,7 @@ public class CalculadoraManual {
 
     /**
      *  Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "multiplicacion" de números naturales de forma manual
+     * "multiplicacion", de números enteros positivos de forma manual
      * 
      * @param multiplicando Número natural
      * @param multiplicador Numero natural
@@ -304,6 +294,9 @@ public class CalculadoraManual {
             
             int multiplicacionParcial = 0;
             int orden = (int) potenciarBase10(i);
+            
+            // Con abs(dígitoMultiplicador) puede ser posible realizar la multiplicación 
+            // de todos los números enteros, habria que tener en cuanta el signo
             int digitoMultiplicador = multiplicador / orden;
             
             String vezVeces = (digitoMultiplicador == 1) ? "vez" : "veces";
@@ -316,7 +309,8 @@ public class CalculadoraManual {
                 multiplicacionParcial = sumar(multiplicacionParcial, multiplicando);
             }
             
-            System.out.printf("%d sumado consigo mismo %d %s es %d", multiplicando, digitoMultiplicador, vezVeces, multiplicacionParcial);
+            System.out.printf("%d sumado consigo mismo %d %s es %d", 
+                    multiplicando, digitoMultiplicador, vezVeces, multiplicacionParcial);
             if (i != 0) {
                 System.out.printf(" desplazamos %d %s", i, posicionEs);
             }
@@ -324,7 +318,8 @@ public class CalculadoraManual {
             System.out.printf(" %d.%n", multiplicacionParcial);
             
             if (multiplicacionFinal != 0) {
-                System.out.printf("Sumamos %d a %d%n", multiplicacionParcial, multiplicacionFinal);
+                System.out.printf("Sumamos %d a %d%n", 
+                        multiplicacionParcial, multiplicacionFinal);
             }
             multiplicacionFinal = sumar(multiplicacionFinal, multiplicacionParcial);
             
@@ -332,9 +327,105 @@ public class CalculadoraManual {
         
         System.out.printf("%nMultiplicación Total: %d%n", multiplicacionFinal);
     }
-
+    
+    /**
+     * Salida por pantalla detallando paso a paso el algoritmo para la operación
+     * "división" entera, de números naturales de forma manual
+     * 
+     * @param dividendo Número a dividir
+     * @param divisor Número que divide
+     */
     public static void dividirMenu(int dividendo, int divisor) {
-        System.out.println(dividir(dividendo, divisor));
+        
+        int cociente = 0;
+        int resto = dividendo;
+        
+        cabeceraOperacion('/', dividendo, divisor);
+        
+        // Para valores de dividendo mayor que divisor o dividendo cero no es necesario
+        // hacer ninguna operacion para conocer el resultado
+        if (dividendo >= divisor && divisor != 0) {
+            
+            // Exponente del orden de magnitud de un número
+            int exponente = obtenerLongitud(dividendo);
+            int longDivisor = obtenerLongitud(divisor);
+
+            // Exponente que permitirá comenzar con el grupo de dígitos mínimo necesario
+            // para comenzar
+            exponente = restar(exponente, longDivisor);
+            resto = dividendo / (int) potenciarBase10(exponente);
+
+            exponente = decrementar(exponente);       
+            System.out.println("Tomamos el primer grupo de cifras: " + resto);
+
+            do {
+                
+                int contiene = 0;
+                String vezVeces;
+                
+                // Se agregan dígitos al resto mientras queden dígitos por recorrer y
+                // el divisor no este contenido en el resto
+                while (resto < divisor && exponente >= 0) {
+                    
+                    System.out.printf("Divisor (%d) mayor que el resto (%d). ",
+                            divisor, resto);
+                    
+                    resto = multiplicar(resto, 10)
+                            ;
+                    // Obtención del dígito que será "bajado"
+                    int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
+                    int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
+                    
+                    resto = sumar(resto, digito);
+                    System.out.printf("Bajamos el %d y lo agregamos al resto: %d%n",
+                            digito, resto);
+                    
+                    if (resto < divisor && exponente > 0) {
+                        
+                        cociente *= 10;
+                        
+                        System.out.printf("Divisor (%d) mayor que el resto (%d). ",
+                            divisor, resto);
+                        
+                        if (cociente != 0) {
+                            System.out.println("Añadimos un cero al cociente: " + cociente);
+                        }
+                    }
+                    
+                    exponente = decrementar(exponente);
+                } // Fin del segundo while
+                
+                if (resto >= divisor) {
+                    System.out.printf("%d esta contenido en %d, ",
+                            divisor, resto);
+                }
+                
+                // Veces que el divisor esta contenido en el resto (división entera)
+                while (resto >= divisor) {
+                    resto = restar(resto, divisor);
+                    contiene = incrementar(contiene);
+                }
+                
+                cociente = sumar(multiplicar(cociente, 10), contiene);
+                
+                if (contiene != 0) {
+                    vezVeces = (contiene == 1) ? " vez. " : " veces. ";
+                    System.out.print(contiene + vezVeces);
+                    System.out.println("Le añadimos al cociente: " + cociente);
+                }
+                
+            } while (exponente >= 0); // aun no se han recorrido todos los dígitos
+            
+            System.out.println("No quedan dígitos por recorrer.");
+        } // fin del if
+        
+        if (divisor == 0) {
+            System.out.println("La división por cero no está permitida");
+        } else {
+            System.out.println("División Total:");
+            System.out.println("  Cociente:" + cociente);
+            System.out.println("  Resto:" + resto);
+        }
     }
 
     /**
@@ -384,8 +475,9 @@ public class CalculadoraManual {
 
     
     /**
-     * Retorna la resta de dos números enteros simpre que el orden de magnitud
-     * del minuendo sea mayor o igual que el del sustraendo
+     * Retorna la resta de dos números enteros positivos.
+     * 
+     * VÁLIDO SOLO PARA VALORES DE: minuendo >= sustraendo
      * 
      * @param minuendo El minuendo
      * @param sustraendo El sustraendo
@@ -573,7 +665,7 @@ public class CalculadoraManual {
             }
             
             // Añade al cociente el nuevo valor obtenido
-            cociente = sumar(cociente * 10, contiene);
+            cociente = sumar(multiplicar(cociente, 10), contiene);
             
         }
         
