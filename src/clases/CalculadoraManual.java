@@ -22,7 +22,7 @@ public class CalculadoraManual {
      * @param longitud
      * @param caracter
      */
-    private static void printNChar(int longitud, char caracter) {
+    private static void imprimirNChar(int longitud, char caracter) {
         for (int i = 0; i < longitud; i++) {
             System.out.print(caracter);
         }
@@ -70,7 +70,7 @@ public class CalculadoraManual {
         System.out.printf("Cálculo de la %s:\n\n", operAString);
         System.out.printf("%" + ESPACIOS_IZQ + "s" + "%" + MAX_DIGITOS + "d%n", " ",  num1);
         System.out.printf(operador + "%" + (ESPACIOS_IZQ - 1) + "s" + "%" + MAX_DIGITOS + "d%n", " ",  num2);
-        printNChar(LONG_FILA, '-');
+        imprimirNChar(LONG_FILA, '-');
     }
     
     /**
@@ -673,6 +673,6 @@ public class CalculadoraManual {
         return cociente;
     }
     */
-    
+
     
 }
