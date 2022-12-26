@@ -4,6 +4,7 @@
  */
 package clases;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -607,24 +608,33 @@ public class CalculadoraManual {
     }
     
     /**
-     * Borra la pantalla con independencia del SO
+     * Borra la pantalla
      */
     private static void borrarPantalla() {
-        try {  
-            String os = System.getProperty("os.name");
-            
-            if (os.contains("Windows")) {  
-                Runtime.getRuntime().exec("cls");  
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }  
-        }  
-        catch (Exception e) {
-            // Pues no se borra la pantalla
-        } 
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
     
-    private static void imprimirCabeceraMPrinc() {
+    /**
+     * Imprime por pantalla la cabecera del menú principal de la aplicación
+     * 
+     * Salida:
+     * 
+     * Permite representar el proceso 'manual' que se lleva a cabo
+     * en la solución de las operaciones matemáticas siguientes:
+     * 
+     * ************************************************************
+     * 1. Sumar
+     * 2. Restar
+     * 3. Multipicar
+     * 4. Dividir
+     * 0. Salir
+     * ************************************************************
+     * Seleccione la operacion que desea realizar: 
+     * 
+     * 
+     */
+    private static void imprimirCabeceraMenuPrinc() {
         
         final int LONG_LINEA = 60;
         
@@ -644,30 +654,121 @@ public class CalculadoraManual {
         imprimirNChar(LONG_LINEA, '*');
     }
     
-    private static String introdicirDatos() {
+    /**
+     * Entrada por Teclado
+     * 
+     * @return String linea introducida por teclado
+     */
+    private static String introdicirDato() {
         Scanner sc = new Scanner(System.in);
+        
         return sc.nextLine();
     }
     
+    /**
+     * Espera hasta que se introduzca un valor cualqiera por teclado
+     */
+    private static void esperar() {
+        System.out.println("Pulse cualquier tecla para continuar");
+        introdicirDato();
+    }
+    
+    /**
+     * Retorna y valida la entrada por teclado acotada a números naturales entre (1, 32767)
+     * 
+     * @return Short Número positivo mayor que cero y menor o igual que 32767
+     */
+    private static short introducirOperando() {
+        
+        short operando = 0;
+        boolean continua;
+        
+        do {
+            
+            System.out.printf("Introduzca un número entero poditivo entre (1, %d): ",Short.MAX_VALUE);
+            
+            try {
+                
+                continua = false;
+                
+                Scanner sc = new Scanner(System.in);
+                operando = sc.nextShort();
+                
+                if (operando <= 0 || operando > Short.MAX_VALUE) {
+                    System.out.println("El número sobrepasa los límites permitidos para los números naturales\n");
+                    continua = true;
+                }
+                            
+            } catch (InputMismatchException e) {
+                System.out.println("Por favor entre un valor válido\n");
+                continua = true;
+            }
+            
+        } while(continua);
+        
+        return operando;
+    }
+    
+   
+    /**
+     * Menú principal de la aplicación
+     */
     public static void lanzarMenuPrincipal() {
         
         boolean continua = true;
         
         do {
             String accion;
+            short operando1;
+            short operando2;
             
-            imprimirCabeceraMPrinc();
+            imprimirCabeceraMenuPrinc();
+            
             System.out.print("Seleccione la operacion que desea realizar: ");
-            accion = introdicirDatos();
+            accion = introdicirDato();
+            System.out.println();
             
             switch (accion) {
-                case "1" -> System.out.println("Sumar");
-                case "2" -> System.out.println("Restar");
-                case "3" -> System.out.println("Multiplicar");
-                case "4" -> System.out.println("Dividir");
+                case "1" -> {
+                    operando1 = introducirOperando();
+                    operando2 = introducirOperando();
+                    borrarPantalla();
+                    sumarMenu(operando1, operando2);
+                    esperar();
+                
+                }
+                case "2" -> {
+                    operando1 = introducirOperando();
+                    operando2 = introducirOperando();
+                    
+                    if (operando2 > operando1) {
+                        System.out.println("La operación devuelve un resultado negativo y no será procesada");
+                    } else {
+                        borrarPantalla();
+                        restarMenu(operando1, operando2);
+                    }
+                    
+                    esperar();
+                }
+                case "3" -> {
+                    operando1 = introducirOperando();
+                    operando2 = introducirOperando();
+                    borrarPantalla();
+                    multiplicarMenu(operando1, operando2);
+                    esperar();
+                
+                }
+                case "4" -> {
+                    operando1 = introducirOperando();
+                    operando2 = introducirOperando();
+                    borrarPantalla();
+                    dividirMenu(operando1, operando2);
+                    esperar();
+                
+                }
                 case "0" -> continua = false;
             }
-            System.out.println("Eleccion: " + accion);
+
         } while (continua);
         
         System.out.println("Hasta la vista!");
