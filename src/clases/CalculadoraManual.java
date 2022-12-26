@@ -561,7 +561,7 @@ public class CalculadoraManual {
      * @param multiplicador El multiplicador
      * @return int multiplicando * multiplicador
      */
-    private s<tatic int multiplicar(int multiplicando, int multiplicador) {
+    private static int multiplicar(int multiplicando, int multiplicador) {
         
         // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
