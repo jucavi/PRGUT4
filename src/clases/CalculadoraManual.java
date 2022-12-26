@@ -4,6 +4,8 @@
  */
 package clases;
 
+import java.util.Scanner;
+
 /**
  *
  * @author jcarv
@@ -15,18 +17,42 @@ public class CalculadoraManual {
     
     
     // Métodos auxiliares
+    // TODO CAMBIAR TODAS LAS FIRMAS A PRIVATE
+    
     /**
-     * Imprime por pantalla una linea conformada por el caracter y de la longitud
-     * pasados como parámetro
+     * Retorna una cadena de texto con longitud y solo conformada por el caracter
+     * pasados por parámetro
      * 
-     * @param longitud
-     * @param caracter
+     * Ejemplo:
+     *  longitud = 6
+     *  caracter = '*'
+     * 
+     * Retorno -> "******"
+     * 
+     * @param longitud Longitud de la linea de texto
+     * @param caracter Caracter de relleno
+     * @return String caracter * longitud
+     */
+    private static String repetirNchar(int longitud, char caracter) {
+        StringBuilder linea = new StringBuilder();
+        
+        // Agrega longitud veces el caracter a la linea
+        for (int i = 0; i < longitud; i++) {
+            linea.append(caracter);
+        }
+        
+        return linea.toString();
+    }
+    
+    /**
+     * Imprime por pantalla una linea de texto de longitud definida por el primer parámetro
+     * y conformada exclusivamente por el caracter del segundo parámetro
+     * 
+     * @param longitud Longitud de la linea de texto
+     * @param caracter Caracter de relleno
      */
     private static void imprimirNChar(int longitud, char caracter) {
-        for (int i = 0; i < longitud; i++) {
-            System.out.print(caracter);
-        }
-        System.out.println();
+        System.out.println(repetirNchar(longitud, caracter));
     }
     
     /**
@@ -49,7 +75,7 @@ public class CalculadoraManual {
      * @param num1 Número entero positivo
      * @param num2 Número entero positivo
      */
-    private static void cabeceraOperacion(char operador, int num1, int num2) {
+    private static void imprimirCabeceraOp(char operador, int num1, int num2) {
         
         String operAString = "OPERACION";
         
@@ -161,7 +187,7 @@ public class CalculadoraManual {
         // Resultado de la susumando2ma
         int sumaFinal = 0;
         
-        cabeceraOperacion('+', sumando1, sumando2);
+        imprimirCabeceraOp('+', sumando1, sumando2);
 
         while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
               
@@ -221,7 +247,7 @@ public class CalculadoraManual {
         // Valor final de la resta a retornar por el método
         int restaFinal = 0;
         
-        cabeceraOperacion('-', minuendo, sustraendo);
+        imprimirCabeceraOp('-', minuendo, sustraendo);
         
         // Recorre los dígitos de ambos números comenzando por el menos significativo
         // de ambos ralizando su resta y determinado si hay acarreo
@@ -287,7 +313,7 @@ public class CalculadoraManual {
         // Partimos de un exponente un orden menor a la cantidad de dígitos contenidos en el multiplicador
         int exponente = decrementar(obtenerLongitud(multiplicador));
         
-        cabeceraOperacion('*', multiplicando, multiplicador);
+        imprimirCabeceraOp('*', multiplicando, multiplicador);
         
         // Itera sombre cada dígito del multiplicador
         for (int i = exponente; i >= 0 ; i--) {
@@ -340,7 +366,7 @@ public class CalculadoraManual {
         int cociente = 0;
         int resto = dividendo;
         
-        cabeceraOperacion('/', dividendo, divisor);
+        imprimirCabeceraOp('/', dividendo, divisor);
         
         // Para valores de dividendo mayor que divisor o dividendo cero no es necesario
         // hacer ninguna operacion para conocer el resultado
@@ -473,7 +499,6 @@ public class CalculadoraManual {
         return sumaFinal;
     }
 
-    
     /**
      * Retorna la resta de dos números enteros positivos.
      * 
@@ -529,7 +554,6 @@ public class CalculadoraManual {
         return restaFinal;
     }
     
-    
     /**
      * Retorna la multiplicación de dos números enteros positivos
      * 
@@ -537,7 +561,7 @@ public class CalculadoraManual {
      * @param multiplicador El multiplicador
      * @return int multiplicando * multiplicador
      */
-    private static int multiplicar(int multiplicando, int multiplicador) {
+    private s<tatic int multiplicar(int multiplicando, int multiplicador) {
         
         // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
         int exponente = 0;
@@ -580,6 +604,73 @@ public class CalculadoraManual {
         // Retorna el resultado de la multiplicación
         //  TODO comprobar que no haya resultado negativo overflow
         return multiplicacionFinal;
+    }
+    
+    /**
+     * Borra la pantalla con independencia del SO
+     */
+    private static void borrarPantalla() {
+        try {  
+            String os = System.getProperty("os.name");
+            
+            if (os.contains("Windows")) {  
+                Runtime.getRuntime().exec("cls");  
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }  
+        }  
+        catch (Exception e) {
+            // Pues no se borra la pantalla
+        } 
+    }
+    
+    private static void imprimirCabeceraMPrinc() {
+        
+        final int LONG_LINEA = 60;
+        
+        borrarPantalla();
+        System.out.println("Permite representar el proceso 'manual' que se lleva a cabo\n"
+                + "en la solución de las operaciones matemáticas siguientes:\n");
+        
+        imprimirNChar(LONG_LINEA, '*');
+        
+        
+        System.out.println("1. Sumar");
+        System.out.println("2. Restar");
+        System.out.println("3. Multipicar");
+        System.out.println("4. Dividir");
+        System.out.println("0. Salir");
+        
+        imprimirNChar(LONG_LINEA, '*');
+    }
+    
+    private static String introdicirDatos() {
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+    
+    public static void lanzarMenuPrincipal() {
+        
+        boolean continua = true;
+        
+        do {
+            String accion;
+            
+            imprimirCabeceraMPrinc();
+            System.out.print("Seleccione la operacion que desea realizar: ");
+            accion = introdicirDatos();
+            
+            switch (accion) {
+                case "1" -> System.out.println("Sumar");
+                case "2" -> System.out.println("Restar");
+                case "3" -> System.out.println("Multiplicar");
+                case "4" -> System.out.println("Dividir");
+                case "0" -> continua = false;
+            }
+            System.out.println("Eleccion: " + accion);
+        } while (continua);
+        
+        System.out.println("Hasta la vista!");
     }
     
     
