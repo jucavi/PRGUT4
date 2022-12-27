@@ -620,9 +620,6 @@ public class CalculadoraManual {
      * 
      * Salida:
      * 
-     * Permite representar el proceso 'manual' que se lleva a cabo
-     * en la solución de las operaciones matemáticas siguientes:
-     * 
      * ************************************************************
      * 1. Sumar
      * 2. Restar
@@ -712,12 +709,16 @@ public class CalculadoraManual {
    
     /**
      * Menú principal de la aplicación
+     * 
+     * Permite representar el proceso 'manual' que se lleva a cabo
+     * en la solución de las operaciones matemáticas
      */
     public static void lanzarMenuPrincipal() {
         
-        boolean continua = true;
+        boolean continua;
         
         do {
+            
             String accion;
             short operando1;
             short operando2;
