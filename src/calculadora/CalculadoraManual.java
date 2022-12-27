@@ -2,23 +2,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clases;
+package calculadora;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- *
+ * Aplicacíón donde se implementan métodos para realizar y representar por pantalla 
+ * paso a paso el proceso de resolución "manual" de las operaciones matmáticas de suma, 
+ * resta, multiplicación y división
+ * 
  * @author jcarv
  */
 public class CalculadoraManual {
 
-    // Constructor vacío permitirá acceder a los métodos de clase
-    public CalculadoraManual() {
-    }
-
-    // Métodos auxiliares
-    // TODO CAMBIAR TODAS LAS FIRMAS A PRIVATE
     /**
      * Retorna una cadena de texto con longitud y solo conformada por el
      * caracter pasados por parámetro
@@ -181,7 +178,7 @@ public class CalculadoraManual {
      * @param sumando1 Primer sumando de la operación
      * @param sumando2 Segundo sumando de la operación
      */
-    public static void sumarMenu(int sumando1, int sumando2) {
+    private static void sumarMenu(int sumando1, int sumando2) {
 
         // La operación de suma comienza con acarreo cero
         int acarreo = 0;
@@ -240,7 +237,7 @@ public class CalculadoraManual {
      * @param minuendo Minuendo de la operación
      * @param sustraendo Sustraendo de la operación
      */
-    public static void restarMenu(int minuendo, int sustraendo) {
+    private static void restarMenu(int minuendo, int sustraendo) {
 
         // La operación de resta comienza con acarreo cero
         int acarreo = 0;
@@ -309,7 +306,7 @@ public class CalculadoraManual {
      * @param multiplicando Número natural
      * @param multiplicador Numero natural
      */
-    public static void multiplicarMenu(int multiplicando, int multiplicador) {
+    private static void multiplicarMenu(int multiplicando, int multiplicador) {
 
         int multiplicacionFinal = 0;
         // Partimos de un exponente un orden menor a la cantidad de dígitos contenidos en el multiplicador
@@ -354,6 +351,105 @@ public class CalculadoraManual {
         }
 
         System.out.printf("%nMultiplicación Total: %d%n", multiplicacionFinal);
+    }
+    
+        /**
+     * Salida por pantalla detallando paso a paso el algoritmo para la operación
+     * "división" entera, de números naturales de forma manual
+     *
+     * @param dividendo Número a dividir
+     * @param divisor Número que divide
+     */
+    private static void dividirMenu(int dividendo, int divisor) {
+
+        int cociente = 0;
+        int resto = dividendo;
+
+        imprimirCabeceraOp('/', dividendo, divisor);
+
+        // Para valores de dividendo mayor que divisor o dividendo cero no es necesario
+        // hacer ninguna operacion para conocer el resultado
+        if (dividendo >= divisor && divisor != 0) {
+
+            // Exponente del orden de magnitud de un número
+            int exponente = obtenerLongitud(dividendo);
+            int longDivisor = obtenerLongitud(divisor);
+
+            // Exponente que permitirá comenzar con el grupo de dígitos mínimo necesario
+            // para comenzar
+            exponente = restar(exponente, longDivisor);
+            resto = dividendo / (int) potenciarBase10(exponente);
+
+            exponente = decrementar(exponente);
+            System.out.printf("Tomamos el primer grupo de cifras: %d%n", resto);
+
+            do {
+
+                int contiene = 0;
+                String restoGrupo = (cociente != 0) ? "resto" : "grupo de cifras";
+
+                // Se agregan dígitos al resto mientras queden dígitos por recorrer y
+                // el divisor no este contenido en el resto
+                while (resto < divisor && exponente >= 0) {
+
+                    System.out.printf("Divisor (%d) mayor que el %s (%d). ",
+                            divisor, restoGrupo, resto);
+
+                    resto = multiplicar(resto, 10);
+                    // Obtención del dígito que será "bajado"
+                    int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
+                    int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
+
+                    resto = sumar(resto, digito);
+                    System.out.printf("Bajamos el %d y lo agregamos al %s: %d%n",
+                            digito, restoGrupo, resto);
+
+                    if (resto < divisor && exponente > 0) {
+
+                        cociente *= 10;
+
+                        System.out.printf("Divisor (%d) mayor que el %s (%d). ",
+                                divisor, restoGrupo, resto);
+
+                        if (cociente != 0) {
+                            System.out.println("Añadimos un cero al cociente: " + cociente);
+                        }
+                    }
+
+                    exponente = decrementar(exponente);
+                } // Fin del segundo while
+
+                if (resto >= divisor) {
+                    System.out.printf("%d esta contenido en %d, ",
+                            divisor, resto);
+                }
+
+                // Veces que el divisor esta contenido en el resto (división entera)
+                while (resto >= divisor) {
+                    resto = restar(resto, divisor);
+                    contiene = incrementar(contiene);
+                }
+
+                cociente = sumar(multiplicar(cociente, 10), contiene);
+
+                if (contiene != 0) {
+                    String vezVeces = (contiene == 1) ? " vez " : " veces ";
+                    System.out.print(contiene + vezVeces + " y resto " + resto);
+                    System.out.println(". Le añadimos al cociente: " + cociente);
+                }
+
+            } while (exponente >= 0); // aun no se han recorrido todos los dígitos
+
+            System.out.println("No quedan dígitos por recorrer.");
+        } // fin del if
+
+        if (divisor == 0) {
+            System.out.println("La división por cero no está permitida");
+        } else {
+            System.out.println("División Total:");
+            System.out.println("  Cociente:" + cociente);
+            System.out.println("  Resto:" + resto);
+        }
     }
 
     /**
@@ -507,105 +603,6 @@ public class CalculadoraManual {
         //  TODO comprobar que no haya resultado negativo overflow
         return multiplicacionFinal;
     }
-
-    /**
-     * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "división" entera, de números naturales de forma manual
-     *
-     * @param dividendo Número a dividir
-     * @param divisor Número que divide
-     */
-    public static void dividirMenu(int dividendo, int divisor) {
-
-        int cociente = 0;
-        int resto = dividendo;
-
-        imprimirCabeceraOp('/', dividendo, divisor);
-
-        // Para valores de dividendo mayor que divisor o dividendo cero no es necesario
-        // hacer ninguna operacion para conocer el resultado
-        if (dividendo >= divisor && divisor != 0) {
-
-            // Exponente del orden de magnitud de un número
-            int exponente = obtenerLongitud(dividendo);
-            int longDivisor = obtenerLongitud(divisor);
-
-            // Exponente que permitirá comenzar con el grupo de dígitos mínimo necesario
-            // para comenzar
-            exponente = restar(exponente, longDivisor);
-            resto = dividendo / (int) potenciarBase10(exponente);
-
-            exponente = decrementar(exponente);
-            System.out.printf("Tomamos el primer grupo de cifras: %d%n", resto);
-
-            do {
-
-                int contiene = 0;
-                String restoGrupo = (cociente != 0) ? "resto" : "grupo de cifras";
-
-                // Se agregan dígitos al resto mientras queden dígitos por recorrer y
-                // el divisor no este contenido en el resto
-                while (resto < divisor && exponente >= 0) {
-
-                    System.out.printf("Divisor (%d) mayor que el %s (%d). ",
-                            divisor, restoGrupo, resto);
-
-                    resto = multiplicar(resto, 10);
-                    // Obtención del dígito que será "bajado"
-                    int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
-                    int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
-
-                    resto = sumar(resto, digito);
-                    System.out.printf("Bajamos el %d y lo agregamos al %s: %d%n",
-                            digito, restoGrupo, resto);
-
-                    if (resto < divisor && exponente > 0) {
-
-                        cociente *= 10;
-
-                        System.out.printf("Divisor (%d) mayor que el %s (%d). ",
-                                divisor, restoGrupo, resto);
-
-                        if (cociente != 0) {
-                            System.out.println("Añadimos un cero al cociente: " + cociente);
-                        }
-                    }
-
-                    exponente = decrementar(exponente);
-                } // Fin del segundo while
-
-                if (resto >= divisor) {
-                    System.out.printf("%d esta contenido en %d, ",
-                            divisor, resto);
-                }
-
-                // Veces que el divisor esta contenido en el resto (división entera)
-                while (resto >= divisor) {
-                    resto = restar(resto, divisor);
-                    contiene = incrementar(contiene);
-                }
-
-                cociente = sumar(multiplicar(cociente, 10), contiene);
-
-                if (contiene != 0) {
-                    String vezVeces = (contiene == 1) ? " vez " : " veces ";
-                    System.out.print(contiene + vezVeces + " y resto " + resto);
-                    System.out.println(". Le añadimos al cociente: " + cociente);
-                }
-
-            } while (exponente >= 0); // aun no se han recorrido todos los dígitos
-
-            System.out.println("No quedan dígitos por recorrer.");
-        } // fin del if
-
-        if (divisor == 0) {
-            System.out.println("La división por cero no está permitida");
-        } else {
-            System.out.println("División Total:");
-            System.out.println("  Cociente:" + cociente);
-            System.out.println("  Resto:" + resto);
-        }
-    }
     
     /**
      * Borra la pantalla
@@ -666,6 +663,17 @@ public class CalculadoraManual {
         System.out.println("Pulse cualquier tecla para continuar");
         introdicirLinea();
     }
+    
+    /**
+     * Retorna si el número pasado como paraámetro cumple la condicion de ser
+     * natural y dentro del límite del tipo short
+     * 
+     * @param opernado Número entero
+     * @return boolean 0 &lt; operando &le; 32767
+     */
+    private static boolean validarNaturalShort(long operando) {
+        return operando > 0 && operando <= Short.MAX_VALUE;
+    }
 
     /**
      * Retorna y valida la entrada por teclado acotada a números naturales entre
@@ -683,13 +691,16 @@ public class CalculadoraManual {
             System.out.printf("Introduzca un número entero poditivo entre (1, %d): ", Short.MAX_VALUE);
 
             try {
-
+                
+                boolean esNaturalShort;
                 continua = false;
 
                 Scanner sc = new Scanner(System.in);
                 operando = sc.nextLong();
-
-                if (operando <= 0 || operando > Short.MAX_VALUE) {
+                
+                esNaturalShort = validarNaturalShort(operando);
+                
+                if (!esNaturalShort) {
                     System.out.println("El número sobrepasa los límites permitidos\n");
                     continua = true;
                 }
@@ -710,7 +721,7 @@ public class CalculadoraManual {
      * Permite representar por pantalla el proceso 'manual' que se lleva a cabo en la
      * solución de las operaciones matemáticas de suma, resta, multiplicación y división
      */
-    public static void lanzarMenuPrincipal() {
+    private static void lanzarMenuPrincipal() {
 
         boolean continua = true;
 
@@ -740,7 +751,7 @@ public class CalculadoraManual {
                     operando2 = introducirOperando();
 
                     if (operando2 > operando1) {
-                        System.out.println("La operación devuelve un resultado negativo y no será procesada.");
+                        System.out.println("\nLa operación devuelve un resultado negativo y no será procesada.\n");
                     } else {
                         borrarPantalla();
                         restarMenu(operando1, operando2);
@@ -773,7 +784,16 @@ public class CalculadoraManual {
         System.out.println("Hasta la vista!");
     }
     
-    public static void comprobarResta (int minuendo, int sustraendo, int diferencia) {
+    
+    /**
+     * Muestra por pantalla si el resultado obtenido con el uso del método resta
+     * corresponde con el valor esperado
+     * 
+     * @param minuendo Número natural
+     * @param sustraendo Número natural
+     * @param diferencia minuendo - sustraendo
+     */
+    private static void comprobarResta (int minuendo, int sustraendo, int diferencia) {
         
         String esCorrectoStr = "INCORRECTO";
         
@@ -793,7 +813,16 @@ public class CalculadoraManual {
         System.out.println("Resultado: " + esCorrectoStr);
     }
     
-    public static void comprobarDivision (int dividendo, int divisor, int cociente, int resto) {
+    /**
+     * Muestra por pantalla si el resultado obtenido con el uso de los métodos 
+     * implementados corresponden con los valores esperados
+     * 
+     * @param dividendo Número natural a dividir
+     * @param divisor Número natural que divide
+     * @param cociente dividendo / divisor
+     * @param resto dividendo - (cociente * divisor)
+     */
+    private static void comprobarDivision (int dividendo, int divisor, int cociente, int resto) {
         
         int resultadoResto;
         int cocientePorDivisor;
@@ -829,7 +858,8 @@ public class CalculadoraManual {
     }
     
     // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
-    //No queria borrar un código que funcionaba
+    // No queria borrar un código que funcionaba
+    
     /**
      * Retorna el cociente de la división de dos números enteros positivos
      *
@@ -838,7 +868,6 @@ public class CalculadoraManual {
      * @return int El cociente de dividendo / divisor
      * @throws ArithmeticException La división por cero no está permitida
      */
-    /*
     private static int dividir(int dividendo, int divisor) throws ArithmeticException {
         
         // Si el dividendo es cero lanza una exepción 
@@ -916,5 +945,8 @@ public class CalculadoraManual {
         // Retorna el resultado del cociente de la división entera 
         return cociente;
     }
-    */
+
+   public static void main(String[] args) {
+       lanzarMenuPrincipal();
+   }
 }
