@@ -17,7 +17,7 @@ public class Principal {
         int numero1 = 10;
         int numero2 = 100;
         
-        CalculadoraManual.lanzarMenuPrincipal();
+        // CalculadoraManual.lanzarMenuPrincipal();
         
         //CalculadoraManual.sumarMenu(numero1, numero2);
         
@@ -26,6 +26,14 @@ public class Principal {
         //CalculadoraManual.multiplicarMenu(numero1, numero2);
         
         //CalculadoraManual.dividirMenu(numero1, numero2);
+        
+        for (int i = 1; i <= Short.MAX_VALUE; i++) {
+            for (int j = Short.MAX_VALUE; j > 0; j--) {
+                CalculadoraManual.comprobarDivision(i, j, i/j, i%j);
+                CalculadoraManual.comprobarResta(j, i, j-i);
+                
+            } 
+        }
     }
     
 }
