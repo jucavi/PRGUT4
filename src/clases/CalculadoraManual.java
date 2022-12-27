@@ -653,7 +653,7 @@ public class CalculadoraManual {
      *
      * @return String linea introducida por teclado
      */
-    private static String introdicirDato() {
+    private static String introdicirLinea() {
         Scanner sc = new Scanner(System.in);
 
         return sc.nextLine();
@@ -664,7 +664,7 @@ public class CalculadoraManual {
      */
     private static void esperar() {
         System.out.println("Pulse cualquier tecla para continuar");
-        introdicirDato();
+        introdicirLinea();
     }
 
     /**
@@ -723,7 +723,7 @@ public class CalculadoraManual {
             imprimirCabeceraMenuPrinc();
 
             System.out.print("Seleccione la operacion que desea realizar: ");
-            accion = introdicirDato();
+            accion = introdicirLinea();
             System.out.println();
 
             switch (accion) {
@@ -775,17 +775,22 @@ public class CalculadoraManual {
     
     public static void comprobarResta (int minuendo, int sustraendo, int diferencia) {
         
+        String esCorrectoStr = "INCORRECTO";
+        
         int resultadoRestar = restar(minuendo, sustraendo);
         
-        try {     
-            String esCorrectoStr = (resultadoRestar == diferencia) ? "CORRECTO" : "INCORRECTO";
+        try {           
+            if (resultadoRestar == diferencia) {
+                esCorrectoStr = "CORRECTO";
+            }
             
-            System.out.println("Esperado:" + diferencia);
-            System.out.printf("Obtenido restar(%d, %d): %d%n", minuendo, sustraendo, diferencia);
-            System.out.println("Resultado: " + esCorrectoStr);
         } catch (Exception e) {
             System.out.println("Ocurrió un error inesperado: " + e.getMessage());
         }
+        
+        System.out.println("Esperado:" + diferencia);
+        System.out.printf("Obtenido restar(%d, %d): %d%n", minuendo, sustraendo, diferencia);
+        System.out.println("Resultado: " + esCorrectoStr);
     }
     
     public static void comprobarDivision (int dividendo, int divisor, int cociente, int resto) {
@@ -793,35 +798,34 @@ public class CalculadoraManual {
         int resultadoResto;
         int cocientePorDivisor;
         int resultadoCociente = 0;
-        int dividendoTemp = dividendo;
+        int sumDivisorTemp = 0;
+        String esCorrectoStr = "INCORRECTO";
         
-        while (dividendoTemp >= divisor) {
-            dividendoTemp = restar(dividendoTemp, divisor);
+        // resultadoCociente = dividir(dividendo, divisor);
+        
+        while (sumDivisorTemp < divisor) {
+            sumDivisorTemp = sumar(sumDivisorTemp, divisor);
             resultadoCociente = sumar(resultadoCociente,  1);
         }
         
-        assert resultadoCociente == dividir(dividendo, divisor) : "FALLO METODO DIVISION";
-        
-                
         cocientePorDivisor = multiplicar(resultadoCociente, divisor);
         resultadoResto = restar(dividendo, cocientePorDivisor);
-        
-        
-        try {     
-            String esCorrectoStr = (resultadoCociente == cociente && resultadoResto == resto) ? "CORRECTO" : "INCORRECTO";
+                
+        try {             
+            if (resultadoCociente == cociente && resultadoResto == resto) {
+                esCorrectoStr = "CORRECTO";
+            }
             
-            assert resultadoCociente == cociente;
-            assert resultadoCociente == resto;
-            
-            System.out.printf("dividir(%d, %d)%n", dividendo, divisor);
-            System.out.println("Cociente esperado:" + cociente);
-            System.out.printf("Cociente obtenido: %d%n", resultadoCociente);
-            System.out.println("Resto esperado:" + resto);
-            System.out.printf("Cociente obtenido: %d%n", resultadoResto);
-            System.out.println("Resultado: " + esCorrectoStr);
         } catch (Exception e) {
             System.out.println("Ocurrió un error inesperado: " + e.getMessage());
         }
+               
+        System.out.printf("dividir(%d, %d)%n", dividendo, divisor);
+        System.out.println("Cociente esperado:" + cociente);
+        System.out.printf("Cociente obtenido: %d%n", resultadoCociente);
+        System.out.println("Resto esperado:" + resto);
+        System.out.printf("Cociente obtenido: %d%n", resultadoResto);
+        System.out.println("Resultado: " + esCorrectoStr);
     }
     
     // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
@@ -834,6 +838,7 @@ public class CalculadoraManual {
      * @return int El cociente de dividendo / divisor
      * @throws ArithmeticException La división por cero no está permitida
      */
+    /*
     private static int dividir(int dividendo, int divisor) throws ArithmeticException {
         
         // Si el dividendo es cero lanza una exepción 
@@ -911,4 +916,5 @@ public class CalculadoraManual {
         // Retorna el resultado del cociente de la división entera 
         return cociente;
     }
+    */
 }
