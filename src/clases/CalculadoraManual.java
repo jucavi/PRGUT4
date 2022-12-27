@@ -383,19 +383,19 @@ public class CalculadoraManual {
             resto = dividendo / (int) potenciarBase10(exponente);
 
             exponente = decrementar(exponente);       
-            System.out.println("Tomamos el primer grupo de cifras: " + resto);
+            System.out.printf("Tomamos el primer grupo de cifras: %d%n" ,resto);
 
             do {
                 
                 int contiene = 0;
-                String vezVeces;
-                
+                String restoGrupo = (cociente != 0) ? "resto" : "grupo de cifras";
+                                
                 // Se agregan dígitos al resto mientras queden dígitos por recorrer y
                 // el divisor no este contenido en el resto
                 while (resto < divisor && exponente >= 0) {
                     
-                    System.out.printf("Divisor (%d) mayor que el resto (%d). ",
-                            divisor, resto);
+                    System.out.printf("Divisor (%d) mayor que el %s (%d). ",
+                            divisor, restoGrupo, resto);
                     
                     resto = multiplicar(resto, 10)
                             ;
@@ -404,16 +404,16 @@ public class CalculadoraManual {
                     int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
                     
                     resto = sumar(resto, digito);
-                    System.out.printf("Bajamos el %d y lo agregamos al resto: %d%n",
-                            digito, resto);
+                    System.out.printf("Bajamos el %d y lo agregamos al %s: %d%n",
+                            digito, restoGrupo, resto);
                     
                     if (resto < divisor && exponente > 0) {
                         
                         cociente *= 10;
                         
-                        System.out.printf("Divisor (%d) mayor que el resto (%d). ",
-                            divisor, resto);
-                        
+                        System.out.printf("Divisor (%d) mayor que el %s (%d). ",
+                            divisor, restoGrupo, resto);
+          
                         if (cociente != 0) {
                             System.out.println("Añadimos un cero al cociente: " + cociente);
                         }
@@ -436,9 +436,9 @@ public class CalculadoraManual {
                 cociente = sumar(multiplicar(cociente, 10), contiene);
                 
                 if (contiene != 0) {
-                    vezVeces = (contiene == 1) ? " vez. " : " veces. ";
-                    System.out.print(contiene + vezVeces);
-                    System.out.println("Le añadimos al cociente: " + cociente);
+                    String vezVeces = (contiene == 1) ? " vez " : " veces ";
+                    System.out.print(contiene + vezVeces + " y resto " + resto);
+                    System.out.println(". Le añadimos al cociente: " + cociente);
                 }
                 
             } while (exponente >= 0); // aun no se han recorrido todos los dígitos
@@ -715,7 +715,7 @@ public class CalculadoraManual {
      */
     public static void lanzarMenuPrincipal() {
         
-        boolean continua;
+        boolean continua = true;
         
         do {
             
