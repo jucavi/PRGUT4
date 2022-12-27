@@ -131,11 +131,11 @@ public class CalculadoraManual {
     }
 
     /**
-     * Retorna la cantidad de digitos que tiene la representación de un número
+     * Retorna la cantidad de dígitos que tiene la representación de un número
      * entero
      *
      * @param numero Número entero
-     * @return int Longitud de la representación de un nñumero entero
+     * @return int Longitud de la representación de un número entero
      */
     private static int obtenerLongitud(int numero) {
 
@@ -301,10 +301,10 @@ public class CalculadoraManual {
 
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "multiplicacion", de números enteros positivos de forma manual
+     * "multiplicación", de números enteros positivos de forma manual
      *
      * @param multiplicando Número natural
-     * @param multiplicador Numero natural
+     * @param multiplicador Número natural
      */
     private static void multiplicarMenu(int multiplicando, int multiplicador) {
 
@@ -688,7 +688,7 @@ public class CalculadoraManual {
 
         do {
 
-            System.out.printf("Introduzca un número entero poditivo entre (1, %d): ", Short.MAX_VALUE);
+            System.out.printf("Introduzca un número entero positivo entre (1, %d): ", Short.MAX_VALUE);
 
             try {
                 
@@ -733,7 +733,7 @@ public class CalculadoraManual {
 
             imprimirCabeceraMenuPrinc();
 
-            System.out.print("Seleccione la operacion que desea realizar: ");
+            System.out.print("Seleccione la operación que desea realizar: ");
             accion = introdicirLinea();
             System.out.println();
 
@@ -945,7 +945,12 @@ public class CalculadoraManual {
         // Retorna el resultado del cociente de la división entera 
         return cociente;
     }
-
+    
+    /**
+     * Método principal
+     * 
+     * @param args 
+     */
    public static void main(String[] args) {
        lanzarMenuPrincipal();
    }
