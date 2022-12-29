@@ -637,7 +637,7 @@ public class CalculadoraManual {
 //            } catch (ArithmeticException e) {
 //                System.out.println(e);
 //            }
-            while (sumTemp < dividendo) {
+            while (sumar(sumTemp, divisor) <= dividendo) {
                 sumTemp = sumar(sumTemp, divisor);
                 cocienteCalc = sumar(cocienteCalc,  1);
             }
@@ -649,9 +649,9 @@ public class CalculadoraManual {
         esCorrectoCocStr = (cocienteCalc == cociente) ? "CORRECTO" : "INCORRECTO";
         esCorrectoResStr = (restoCalc == resto) ? "CORRECTO" : "INCORRECTO";
 
-        System.out.printf("Cociente sperado: %d, Cociente obtenido: %d%n!%s¡%n", 
+        System.out.printf("Cociente esperado: %d, Cociente obtenido: %d%n!%s¡%n", 
                 cociente, cocienteCalc, esCorrectoCocStr);
-        System.out.printf("Cociente sperado: %d, Cociente obtenido: %d%n!%s¡%n%n", 
+        System.out.printf("Cociente esperado: %d, Cociente obtenido: %d%n!%s¡%n%n", 
                 resto, restoCalc, esCorrectoResStr);
     }
     
@@ -715,7 +715,7 @@ public class CalculadoraManual {
      * Espera hasta que se introduzca un valor cualqiera por teclado
      */
     private static void esperar() {
-        System.out.println("Pulse cualquier tecla para continuar");
+        System.out.println("Pulse ENTER para continuar");
         introdicirLinea();
     }
     
