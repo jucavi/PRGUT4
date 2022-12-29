@@ -142,7 +142,7 @@ public class CalculadoraManual {
 
         int orden = 0;
 
-        // la representación de cero contiene un dígito
+        // la representación de cero cocienteIteracion un dígito
         do {
             numero /= 10;
             orden = sumar(orden, 1);
@@ -171,7 +171,7 @@ public class CalculadoraManual {
      * @return int numero - 1
      */
     private static int decrementar(int numero) {
-        return restar(numero, -1);
+        return restar(numero, 1);
     }
 
     /**
@@ -383,8 +383,7 @@ public class CalculadoraManual {
             int exponente = obtenerLongitud(dividendo);
             int longDivisor = obtenerLongitud(divisor);
 
-            // Exponente que permitirá comenzar con el grupo de dígitos mínimo necesario
-            // para comenzar
+            // Exponente que permitirá comenzar con el grupo de dígitos mínimo
             exponente = restar(exponente, longDivisor);
             resto = dividendo / (int) potenciarBase10(exponente);
 
@@ -393,17 +392,18 @@ public class CalculadoraManual {
 
             do {
 
-                int contiene = 0;
+                int cocienteIteracion = 0;
                 String restoGrupo = (cociente != 0) ? "resto" : "grupo de cifras";
 
-                // Se agregan dígitos al resto mientras queden dígitos por recorrer y
-                // el divisor no este contenido en el resto
+                // Se agregan dígitos al resto o al grupo de cifras inicial mientras 
+                // queden dígitos por recorrer y el divisor no este contenido en el resto
                 while (resto < divisor && exponente >= 0) {
 
                     System.out.printf("Divisor (%d) mayor que el %s (%d). ",
                             divisor, restoGrupo, resto);
 
                     resto = multiplicar(resto, 10);
+                    
                     // Obtención del dígito que será "bajado"
                     int grupoDigitos = dividendo / (int) potenciarBase10(exponente);
                     int digito = (grupoDigitos > 9) ? grupoDigitos % 10 : grupoDigitos;
@@ -425,7 +425,7 @@ public class CalculadoraManual {
                     }
 
                     exponente = decrementar(exponente);
-                } // Fin del segundo while
+                } // Fin del primer while
 
                 if (resto >= divisor) {
                     System.out.printf("%d esta contenido en %d, ",
@@ -435,21 +435,22 @@ public class CalculadoraManual {
                 // Veces que el divisor esta contenido en el resto (división entera)
                 while (resto >= divisor) {
                     resto = restar(resto, divisor);
-                    contiene = incrementar(contiene);
+                    cocienteIteracion = incrementar(cocienteIteracion);
                 }
+                
+                cociente = multiplicar(cociente, 10);
+                cociente = sumar(cociente, cocienteIteracion);
 
-                cociente = sumar(multiplicar(cociente, 10), contiene);
-
-                if (contiene != 0) {
-                    String vezVeces = (contiene == 1) ? " vez " : " veces ";
-                    System.out.print(contiene + vezVeces + " y resto " + resto);
+                if (cocienteIteracion != 0) {
+                    String vezVeces = (cocienteIteracion == 1) ? " vez " : " veces ";
+                    System.out.print(cocienteIteracion + vezVeces + " y resto " + resto);
                     System.out.println(". Le añadimos al cociente: " + cociente);
                 }
 
-            } while (exponente >= 0); // aun no se han recorrido todos los dígitos
+            } while (exponente >= 0); // Aún no se han recorrido todos los dígitos
 
             System.out.println("No quedan dígitos por recorrer.");
-        } // fin del if
+        } // Fin del if
 
         if (divisor == 0) {
             System.out.println("La división por cero no está permitida");
