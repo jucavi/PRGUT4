@@ -316,8 +316,8 @@ public class CalculadoraManual {
     private static void multiplicarMenu(int multiplicando, int multiplicador) {
 
         int multiplicacionFinal = 0;
-        // Partimos de un exponente un orden menor a la cantidad de dígitos contenidos en el multiplicador
-        // Cantidad de dígitos del multiplicador
+        // Partimos de un exponente un orden menor a la cantidad de dígitos 
+        // en la representación del número multiplicador
         int exponente = decrementar(obtenerLongitud(multiplicador));
 
         imprimirCabeceraOp('*', multiplicando, multiplicador);
@@ -563,46 +563,34 @@ public class CalculadoraManual {
      */
     private static int multiplicar(int multiplicando, int multiplicador) {
 
-        // Unidad del dídigito en el que esta trabajando la iteración (unidad, décima, ..)
-        int exponente = 0;
-
-        // Almacena el resultado final de la multiplicación que será retornado
-        // por el método
         int multiplicacionFinal = 0;
+        
+        // Partimos de un exponente un orden menor a la cantidad de dígitos en 
+        // la representación del multiplicador
+        int exponente = decrementar(obtenerLongitud(multiplicador));
 
-        // Itera si ninguno de los números es cero (un multiplicación por cero
-        // es cero) por lo que aun quedan digitos sobre los que operar
-        while (multiplicando != 0 && multiplicador != 0) {
+        // Itera sombre cada dígito del multiplicador
+        for (int i = exponente; i >= 0; i--) {
 
-            // Contendrá la multiplicación en forma de suma del multiplicando por
-            // el digitoMultiplicador
             int multiplicacionParcial = 0;
+            int orden = (int) potenciarBase10(i);
 
-            // Obtiene el digito menos significativo del multiplicador
-            int digitoMultiplicador = multiplicador % 10;
+            // Con abs(dígitoMultiplicador) puede ser posible realizar la multiplicación 
+            // de todos los números enteros, habria que tener en cuanta el signo
+            int digitoMultiplicador = multiplicador / orden;
 
-            // Condición finalizadora del while
-            multiplicador /= 10;
+            multiplicador %= orden;
 
-            // Itera sobre el digitoMultiplicador acumulando en cada iteración
-            // el multiplicando en multiplicacionParcial
-            for (int i = 0; i < digitoMultiplicador; i = sumar(i, 1)) {
+            // Calcula la multiplicación parcial aplicando la suma
+            for (int j = 0; j < digitoMultiplicador; j++) {
                 multiplicacionParcial = sumar(multiplicacionParcial, multiplicando);
             }
 
-            // Ajusta el valor obtenido teniendo en cuenta el orden del digito 
-            // del multiplicando sobre el cual se esta trabajando
-            multiplicacionParcial *= (int) potenciarBase10(exponente);
-
-            // Actuliza el resutado final con el valor obtenido 
+            multiplicacionParcial *= orden;
+            
             multiplicacionFinal = sumar(multiplicacionFinal, multiplicacionParcial);
-
-            // Incrementa el exponente
-            exponente = incrementar(exponente);
         }
 
-        // Retorna el resultado de la multiplicación
-        //  TODO comprobar que no haya resultado negativo overflow
         return multiplicacionFinal;
     }
     
@@ -954,8 +942,8 @@ public class CalculadoraManual {
      * @param args 
      */
    public static void main(String[] args) {
-       //lanzarMenuPrincipal();
+       // lanzarMenuPrincipal();
        
-       System.out.println(restar(-32767, -32767));
+       // System.out.println(multiplicar(401, 20000));
    }
 }
