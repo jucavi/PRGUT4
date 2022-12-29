@@ -190,10 +190,12 @@ public class CalculadoraManual {
         int sumaFinal = 0;
 
         imprimirCabeceraOp('+', sumando1, sumando2);
-
+        
+        // Itera mientras queden dígitos por recorrer en algún sumando o exista
+        // acarreo pendiente de la operación anterior
         while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
 
-            // Almacena la suma de los dígitos
+            // Almacena la suma de los dígitos con los que se opera
             int sumaDigitos;
 
             int digitoSumando1 = sumando1 % 10;
