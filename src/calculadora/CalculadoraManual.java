@@ -191,8 +191,8 @@ public class CalculadoraManual {
 
         imprimirCabeceraOp('+', sumando1, sumando2);
         
-        // Itera mientras queden dígitos por recorrer en algún sumando o exista
-        // acarreo pendiente de la operación anterior
+        // Recorre los dígitos de ambos números comenzando por el menos significativo
+        // de ambos ralizando su suma y determinado si hay acarreo
         while (sumando1 != 0 || sumando2 != 0 || acarreo != 0) {
 
             // Almacena la suma de los dígitos con los que se opera
@@ -261,14 +261,15 @@ public class CalculadoraManual {
 
             int digitoMinuendo = minuendo % 10;
             int digitoSustraendo = sustraendo % 10;
-
+            
+            // Condiciones finalizadoras del while
             minuendo /= 10;
             sustraendo /= 10;
 
             // Si el resultado en la resta de los dígitos es negativo le sumamos 10
             // implica acarreo en la siguiente iteración
             if (digitoMinuendo < digitoSustraendo) {
-                System.out.printf("Como %d es menor que %d sumamos 10 a %1$d. ",
+                System.out.printf("Como %d es menor que %d, sumamos 10 a %1$d. ",
                         digitoMinuendo, digitoSustraendo);
                 digitoMinuendo = sumar(digitoMinuendo, 10);
             }
@@ -276,7 +277,7 @@ public class CalculadoraManual {
             // Realiza la resta de los dígitos tenieno en cuenta el acarreo 
             // de la operación anterior
             digitoSustraendo = sumar(digitoSustraendo, acarreo);
-            restaDigitos = digitoMinuendo - digitoSustraendo;
+            restaDigitos = restar(digitoMinuendo, digitoSustraendo);
 
             System.out.printf("Restamos %d", digitoSustraendo);
             if (acarreo != 0) {
