@@ -213,7 +213,8 @@ public class CalculadoraManual {
             sumando2 /= 10;
 
             // Suma de digitos teniendo en cuenta el acarreo de la operación anterior
-            sumaDigitos = digitoSumando1 + digitoSumando2 + acarreo;
+            sumaDigitos = sumar(digitoSumando1, digitoSumando2);
+            sumaDigitos = sumar(sumaDigitos, acarreo);
 
             acarreo = sumaDigitos / 10;
             sumaDigitos = sumaDigitos % 10;
@@ -226,18 +227,17 @@ public class CalculadoraManual {
             }
 
             // Suma el resultado teniendo en cuenta las unidades
-            sumaFinal += sumaDigitos * (int) potenciarBase10(exponente);
+            sumaFinal = sumar(sumaFinal, sumaDigitos * (int) potenciarBase10(exponente));
 
-            exponente++;
+            exponente = incrementar(exponente);
         }
         System.out.printf("%nSuma Total: %d%n%n", sumaFinal);
     }
 
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "resta", de números naturales de forma manual.
+     * "resta", de números enteros de forma manual.
      *
-     * VÁLIDO SOLO PARA VALORES DE: minuendo >= sustraendo
      *
      * @param minuendo Minuendo de la operación
      * @param sustraendo Sustraendo de la operación
@@ -307,15 +307,17 @@ public class CalculadoraManual {
 
     /**
      * Salida por pantalla detallando paso a paso el algoritmo para la operación
-     * "multiplicación", de números enteros positivos de forma manual
+     * "multiplicación", de números enteros positivos de forma manual incluyendo
+     * el cero
      *
-     * @param multiplicando Número natural
-     * @param multiplicador Número natural
+     * @param multiplicando Número entero mayor o igual que cero
+     * @param multiplicador Número entero mayor o igual que cero
      */
     private static void multiplicarMenu(int multiplicando, int multiplicador) {
 
         int multiplicacionFinal = 0;
         // Partimos de un exponente un orden menor a la cantidad de dígitos contenidos en el multiplicador
+        // Cantidad de dígitos del multiplicador
         int exponente = decrementar(obtenerLongitud(multiplicador));
 
         imprimirCabeceraOp('*', multiplicando, multiplicador);
@@ -953,5 +955,7 @@ public class CalculadoraManual {
      */
    public static void main(String[] args) {
        lanzarMenuPrincipal();
+       
+       //restarMenu(-100, -1900);
    }
 }
