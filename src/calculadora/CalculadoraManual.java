@@ -153,7 +153,8 @@ public class CalculadoraManual {
     }
 
     /**
-     * Retorna el número entero siguiente al pasado como parámetro
+     * Retorna el número entero siguiente al pasado como parámetro utilizando el
+     * método sumar
      *
      * @param numer Número entero
      * @return int numero + 1
@@ -163,13 +164,14 @@ public class CalculadoraManual {
     }
 
     /**
-     * Retorna el número entero anterior al pasado como parámetro
+     * Retorna el número entero anterior al pasado como parámetro utilizando el
+     * método sumar
      *
      * @param numer Número entero
      * @return int numero - 1
      */
     private static int decrementar(int numero) {
-        return restar(numero, 1);
+        return restar(numero, -1);
     }
 
     /**
