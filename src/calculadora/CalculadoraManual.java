@@ -693,8 +693,8 @@ public class CalculadoraManual {
         System.out.println("\t2. Restar");
         System.out.println("\t3. Multipicar");
         System.out.println("\t4. Dividir");
-        System.out.println("\t5. Comprobar Restar");
-        System.out.println("\t6. Comprobar Dividir");
+        System.out.println("\t5. Comprobar Resta");
+        System.out.println("\t6. Comprobar División");
         System.out.println("\t0. Salir");
 
         imprimirNChar(LONG_LINEA, '*');
