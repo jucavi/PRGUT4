@@ -507,9 +507,7 @@ public class CalculadoraManual {
     }
 
     /**
-     * Retorna la resta de dos números enteros positivos.
-     *
-     * VÁLIDO SOLO PARA VALORES DE: minuendo >= sustraendo
+     * Retorna la resta de dos números enteros.
      *
      * @param minuendo El minuendo
      * @param sustraendo El sustraendo
@@ -538,7 +536,8 @@ public class CalculadoraManual {
             minuendo /= 10;
             sustraendo /= 10;
             
-            restaDigitos = ultimoDigMinuendo - ultimoDigSustraendo + acarreo;
+            restaDigitos = sumar(ultimoDigMinuendo, -ultimoDigSustraendo);
+            restaDigitos = sumar(restaDigitos, acarreo);
 
             // Se obtiene el acarreo y el resultado de la suma
             acarreo = restaDigitos / 10;
@@ -955,8 +954,8 @@ public class CalculadoraManual {
      * @param args 
      */
    public static void main(String[] args) {
-       lanzarMenuPrincipal();
+       //lanzarMenuPrincipal();
        
-       //restarMenu(-100, -1900);
+       System.out.println(restar(-32767, -32767));
    }
 }
