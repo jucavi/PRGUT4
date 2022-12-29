@@ -32,7 +32,7 @@ public class CalculadoraManual {
         StringBuilder linea = new StringBuilder();
 
         // Agrega longitud veces el caracter a la linea
-        for (int i = 0; i < longitud; i++) {
+        for (int i = 0; i < longitud; i = sumar(i, 1)) {
             linea.append(caracter);
         }
 
@@ -520,6 +520,7 @@ public class CalculadoraManual {
         while (minuendo != 0 || sustraendo != 0 || acarreo != 0) {
 
             int restaDigitos;
+            int restaConOrden;
 
             // Obtiene el dígito menos significativo del sustraendo y el minuendo
             int ultimoDigMinuendo = minuendo % 10;
@@ -527,24 +528,17 @@ public class CalculadoraManual {
 
             minuendo /= 10;
             sustraendo /= 10;
+            
+            restaDigitos = ultimoDigMinuendo - ultimoDigSustraendo + acarreo;
 
-            // Si el resultado en la resta de los dígitos es negativo le sumamos 10
-            // implica acarreo en la siguiente iteración
-            if (ultimoDigMinuendo < ultimoDigSustraendo) {
-                ultimoDigMinuendo = sumar(ultimoDigMinuendo, 10);
-            }
+            // Se obtiene el acarreo y el resultado de la suma
+            acarreo = restaDigitos / 10;
+            restaDigitos = restaDigitos % 10;
 
-            // Realiza la resta de los dígitos tenieno en cuenta el acarreo 
-            // de la operación anterior
-            ultimoDigSustraendo = sumar(ultimoDigSustraendo, acarreo);
-            restaDigitos = ultimoDigMinuendo - ultimoDigSustraendo;
-
-            // Actuliza la resta, teniendo en cuenta la potencia de los dígitos
-            restaDigitos = restaDigitos * (int) potenciarBase10(exponente);
-            restaFinal = sumar(restaFinal, restaDigitos);
-
-            // Si el digito del minuendo es mayor que 9 es necesario el acarreo
-            acarreo = ultimoDigMinuendo / 10;
+            // Suma teniendo en cuenta unidades
+            restaConOrden = restaDigitos * (int) potenciarBase10(exponente);
+            restaFinal = sumar(restaFinal, restaConOrden);
+            
 
             exponente = incrementar(exponente);
         }
@@ -952,6 +946,8 @@ public class CalculadoraManual {
      * @param args 
      */
    public static void main(String[] args) {
-       lanzarMenuPrincipal();
+       // lanzarMenuPrincipal();
+       
+       System.out.println(restar(0,0));
    }
 }
