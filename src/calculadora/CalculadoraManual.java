@@ -449,7 +449,7 @@ public class CalculadoraManual {
 
             } while (exponente >= 0); // Aún no se han recorrido todos los dígitos
 
-            System.out.println("No quedan dígitos por recorrer.");
+            System.out.println("No quedan dígitos por recorrer.\n");
         } // Fin del if
 
         if (divisor == 0) {
