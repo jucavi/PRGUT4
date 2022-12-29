@@ -595,6 +595,63 @@ public class CalculadoraManual {
     }
     
     /**
+     * Muestra por pantalla si el resultado obtenido con el uso del método resta
+     * corresponde con el valor esperado
+     * 
+     * @param minuendo Número natural
+     * @param sustraendo Número natural
+     * @param diferencia minuendo - sustraendo
+     */
+    private static void comprobarResta (int minuendo, int sustraendo, int diferencia) {
+        
+        String esCorrectoStr;
+        
+        int resultadoRestar = restar(minuendo, sustraendo);
+        
+        esCorrectoStr = (resultadoRestar == diferencia) ?"CORRECTO" : "INCORRECTO";
+        
+        System.out.printf("Esperado: %d, Obtenido: %d%n!%s¡%n%n", 
+                diferencia, resultadoRestar, esCorrectoStr);
+    }
+    
+    /**
+     * Muestra por pantalla si el resultado obtenido con el uso de los métodos 
+     * implementados corresponden con los valores esperados
+     * 
+     * @param dividendo Número natural a dividir
+     * @param divisor Número natural que divide
+     * @param cociente dividendo / divisor
+     * @param resto dividendo - (cociente * divisor)
+     */
+    private static void comprobarDivision (int dividendo, int divisor, int cociente, int resto) {
+        
+        int restoCalc = dividendo;
+        int cocientePorDivisor;
+        int cocienteCalc = 0;
+        int sumTemp = 0;
+        String esCorrectoCocStr, esCorrectoResStr;
+        
+        if (dividendo >= divisor && divisor != 0) {
+        // cocienteCalc = dividir(dividendo, divisor);
+            while (sumTemp < dividendo) {
+                sumTemp = sumar(sumTemp, divisor);
+                cocienteCalc = sumar(cocienteCalc,  1);
+            }
+
+            cocientePorDivisor = multiplicar(cocienteCalc, divisor);
+            restoCalc = restar(dividendo, cocientePorDivisor);
+        }
+        
+        esCorrectoCocStr = (cocienteCalc == cociente) ? "CORRECTO" : "INCORRECTO";
+        esCorrectoResStr = (restoCalc == resto) ? "CORRECTO" : "INCORRECTO";
+
+        System.out.printf("Cociente sperado: %d, Cociente obtenido: %d%n!%s¡%n", 
+                cociente, cocienteCalc, esCorrectoCocStr);
+        System.out.printf("Cociente sperado: %d, Cociente obtenido: %d%n!%s¡%n%n", 
+                resto, restoCalc, esCorrectoResStr);
+    }
+    
+    /**
      * Borra la pantalla
      */
     private static void borrarPantalla() {
@@ -611,7 +668,9 @@ public class CalculadoraManual {
      * 1. Sumar 
      * 2. Restar 
      * 3. Multipicar 
-     * 4. Dividir 
+     * 4. Dividir
+     * 5. Comprobar Restar
+     * 6. Comprobar Dividir
      * 0. Salir
      * ************************************************************ 
      * Seleccione la operacion que desea realizar:
@@ -630,6 +689,8 @@ public class CalculadoraManual {
         System.out.println("2. Restar");
         System.out.println("3. Multipicar");
         System.out.println("4. Dividir");
+        System.out.println("5. Comprobar Restar");
+        System.out.println("6. Comprobar Dividir");
         System.out.println("0. Salir");
 
         imprimirNChar(LONG_LINEA, '*');
@@ -655,8 +716,8 @@ public class CalculadoraManual {
     }
     
     /**
-     * Retorna si el número pasado como paraámetro cumple la condicion de ser
-     * natural y dentro del límite del tipo short
+     * Retorna si el número pasado como parámetro cumple la condicion de ser
+     * natural y dentro del límite superior del tipo short
      * 
      * @param opernado Número entero
      * @return boolean 0 &lt; operando &le; 32767
@@ -666,185 +727,130 @@ public class CalculadoraManual {
     }
 
     /**
-     * Retorna y valida la entrada por teclado acotada a números naturales entre
-     * (1, 32767)
+     * Retorna entrada por teclado acotada a números naturales entre (1, 32767)
+     * Se repite mientras la entrada no sea válida
      *
-     * @return Short Número positivo mayor que cero y menor o igual que 32767
+     * @param ordinal Lugar que ocupa la operación (primer, segundo, tercero...)
+     * @return short Número positivo mayor que cero y menor o igual que 32767
      */
-    private static short introducirOperando() {
+    private static short introducirOperandoShort(String ordinal) {
 
         long operando = 0;
-        boolean continua;
+        boolean esNaturalShort = false;
+        
+        System.out.printf("Introduzca el %s operando (1, %d): ", ordinal, Short.MAX_VALUE);
 
         do {
-
-            System.out.printf("Introduzca un número entero positivo entre (1, %d): ", Short.MAX_VALUE);
-
-            try {
-                
-                boolean esNaturalShort;
-                continua = false;
+            
+            try {   
 
                 Scanner sc = new Scanner(System.in);
                 operando = sc.nextLong();
                 
                 esNaturalShort = validarNaturalShort(operando);
-                
+            
                 if (!esNaturalShort) {
-                    System.out.println("El número sobrepasa los límites permitidos\n");
-                    continua = true;
+                    System.out.println("El número sobrepasa los límites permitidos, inténtelo de nuevo: ");
                 }
 
             } catch (InputMismatchException e) {
-                System.out.println("Por favor entre un valor númerico válido\n");
-                continua = true;
+                System.out.println("Por favor entre un valor númerico válido: ");
             }
-
-        } while (continua);
+            
+        } while (!esNaturalShort);
 
         return (short) operando;
     }
-
+    
     /**
      * Menú principal de la aplicación
      *
      * Permite representar por pantalla el proceso 'manual' que se lleva a cabo en la
      * solución de las operaciones matemáticas de suma, resta, multiplicación y división
+     * 
+     * Será ejecutado hasta que le usuario ingrese por teclado el 0
      */
     private static void lanzarMenuPrincipal() {
 
         boolean continua = true;
 
-        do {
+        while (continua) {
 
-            String accion;
+            String opcionLista;
             short operando1;
             short operando2;
 
             imprimirCabeceraMenuPrinc();
 
             System.out.print("Seleccione la operación que desea realizar: ");
-            accion = introdicirLinea();
+            opcionLista = introdicirLinea();
             System.out.println();
+            
+            switch (opcionLista) {
 
-            switch (accion) {
                 case "1" -> {
-                    operando1 = introducirOperando();
-                    operando2 = introducirOperando();
                     borrarPantalla();
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
                     sumarMenu(operando1, operando2);
                     esperar();
-
                 }
-                case "2" -> {
-                    operando1 = introducirOperando();
-                    operando2 = introducirOperando();
-
+                
+                case "2" -> {          
+                    borrarPantalla();
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
                     if (operando2 > operando1) {
                         System.out.println("\nLa operación devuelve un resultado negativo y no será procesada.\n");
                     } else {
-                        borrarPantalla();
                         restarMenu(operando1, operando2);
                     }
-
                     esperar();
                 }
+                
                 case "3" -> {
-                    operando1 = introducirOperando();
-                    operando2 = introducirOperando();
                     borrarPantalla();
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
                     multiplicarMenu(operando1, operando2);
                     esperar();
 
                 }
+                
                 case "4" -> {
-                    operando1 = introducirOperando();
-                    operando2 = introducirOperando();
                     borrarPantalla();
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
                     dividirMenu(operando1, operando2);
                     esperar();
 
                 }
+                
+                case "5" -> {
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
+                    comprobarResta(operando1, operando2, operando1 - operando2);
+                    esperar();
+
+                }
+                case "6" -> {
+                    operando1 = introducirOperandoShort("primer");
+                    operando2 = introducirOperandoShort("segundo");
+                    
+                    comprobarDivision(operando1, operando2, operando1 / operando2, operando1 % operando2);
+                    esperar();
+
+                }
+                
                 case "0" ->
                     continua = false;
             }
-
-        } while (continua);
-
-        System.out.println("Hasta la vista!");
-    }
-    
-    
-    /**
-     * Muestra por pantalla si el resultado obtenido con el uso del método resta
-     * corresponde con el valor esperado
-     * 
-     * @param minuendo Número natural
-     * @param sustraendo Número natural
-     * @param diferencia minuendo - sustraendo
-     */
-    private static void comprobarResta (int minuendo, int sustraendo, int diferencia) {
-        
-        String esCorrectoStr = "INCORRECTO";
-        
-        int resultadoRestar = restar(minuendo, sustraendo);
-        
-        try {           
-            if (resultadoRestar == diferencia) {
-                esCorrectoStr = "CORRECTO";
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error inesperado: " + e.getMessage());
         }
-        
-        System.out.println("Esperado:" + diferencia);
-        System.out.printf("Obtenido restar(%d, %d): %d%n", minuendo, sustraendo, diferencia);
-        System.out.println("Resultado: " + esCorrectoStr);
-    }
-    
-    /**
-     * Muestra por pantalla si el resultado obtenido con el uso de los métodos 
-     * implementados corresponden con los valores esperados
-     * 
-     * @param dividendo Número natural a dividir
-     * @param divisor Número natural que divide
-     * @param cociente dividendo / divisor
-     * @param resto dividendo - (cociente * divisor)
-     */
-    private static void comprobarDivision (int dividendo, int divisor, int cociente, int resto) {
-        
-        int resultadoResto;
-        int cocientePorDivisor;
-        int resultadoCociente = 0;
-        int sumDivisorTemp = 0;
-        String esCorrectoStr = "INCORRECTO";
-        
-        // resultadoCociente = dividir(dividendo, divisor);
-        
-        while (sumDivisorTemp < divisor) {
-            sumDivisorTemp = sumar(sumDivisorTemp, divisor);
-            resultadoCociente = sumar(resultadoCociente,  1);
-        }
-        
-        cocientePorDivisor = multiplicar(resultadoCociente, divisor);
-        resultadoResto = restar(dividendo, cocientePorDivisor);
-                
-        try {             
-            if (resultadoCociente == cociente && resultadoResto == resto) {
-                esCorrectoStr = "CORRECTO";
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Ocurrió un error inesperado: " + e.getMessage());
-        }
-               
-        System.out.printf("dividir(%d, %d)%n", dividendo, divisor);
-        System.out.println("Cociente esperado:" + cociente);
-        System.out.printf("Cociente obtenido: %d%n", resultadoCociente);
-        System.out.println("Resto esperado:" + resto);
-        System.out.printf("Cociente obtenido: %d%n", resultadoResto);
-        System.out.println("Resultado: " + esCorrectoStr);
     }
     
     // Estaba hecho antes de la tutoria por una mala lectura del enunciado por mi parte
@@ -928,7 +934,8 @@ public class CalculadoraManual {
             }
             
             // Añade al cociente el nuevo valor obtenido
-            cociente = sumar(multiplicar(cociente, 10), contiene);
+            cociente = multiplicar(cociente, 10);
+            cociente = sumar(cociente, contiene);
             
         }
         
@@ -942,8 +949,7 @@ public class CalculadoraManual {
      * @param args 
      */
    public static void main(String[] args) {
-       // lanzarMenuPrincipal();
-       
-       // System.out.println(multiplicar(401, 20000));
+        lanzarMenuPrincipal();
+        System.out.println("Hasta la vista!");
    }
 }
