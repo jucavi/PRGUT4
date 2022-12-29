@@ -60,7 +60,8 @@ public class CalculadoraManual {
      *
      * Cálculo de la Suma:
      *
-     * 105001 + 1999
+     *          105001 
+     * +          1999
      * ---------------
      *
      * @param operador Simbolo mátematico de la opración {+, -, *, /}
@@ -69,7 +70,7 @@ public class CalculadoraManual {
      */
     private static void imprimirCabeceraOp(char operador, int num1, int num2) {
 
-        String operAString = "OPERACION";
+        String operAString = "OPERACION INVÁLIDA";
 
         int maxNum = (num1 > num2) ? num1 : num2;
         final int LONG_FILA = 15;
@@ -946,8 +947,6 @@ public class CalculadoraManual {
      * @param args 
      */
    public static void main(String[] args) {
-       // lanzarMenuPrincipal();
-       
-       System.out.println(restar(0,0));
+       lanzarMenuPrincipal();
    }
 }
