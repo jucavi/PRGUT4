@@ -632,7 +632,11 @@ public class CalculadoraManual {
         String esCorrectoCocStr, esCorrectoResStr;
         
         if (dividendo >= divisor && divisor != 0) {
-        // cocienteCalc = dividir(dividendo, divisor);
+//            try {
+//                cocienteCalc = dividir(dividendo, divisor);
+//            } catch (ArithmeticException e) {
+//                System.out.println(e);
+//            }
             while (sumTemp < dividendo) {
                 sumTemp = sumar(sumTemp, divisor);
                 cocienteCalc = sumar(cocienteCalc,  1);
