@@ -103,7 +103,7 @@ public class CalculadoraManual {
      *
      * @param base La base
      * @param exponente El exponente
-     * @return int La base elevada al exponente
+     * @return double base**exponente
      */
     private static double potenciar(double base, int exponente) {
 
@@ -111,7 +111,7 @@ public class CalculadoraManual {
 
         if (exponente < 0) {
             exponente *= -1;
-            base = 0.1;
+            base = 1 / base;
         }
 
         for (int i = 0; i < exponente; i++) {
