@@ -616,7 +616,7 @@ public class CalculadoraManual {
     
     /**
      * Muestra por pantalla si el resultado obtenido con el uso de los métodos 
-     * implementados corresponden con los valores esperados
+     * implementados corresponden con los valores esperados para los números náturales
      * 
      * @param dividendo Número natural a dividir
      * @param divisor Número natural que divide
