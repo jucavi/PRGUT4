@@ -668,34 +668,34 @@ public class CalculadoraManual {
      *
      * Salida:
      *
-     * ************************************************************
-     * 1. Sumar 
-     * 2. Restar 
-     * 3. Multipicar 
-     * 4. Dividir
-     * 5. Comprobar Restar
-     * 6. Comprobar Dividir
-     * 0. Salir
-     * ************************************************************ 
+     * *********************************************
+     *   1. Sumar 
+     *   2. Restar 
+     *   3. Multipicar 
+     *   4. Dividir
+     *   5. Comprobar Restar
+     *   6. Comprobar Dividir
+     *   0. Salir
+     * *********************************************
      * Seleccione la operacion que desea realizar:
      *
      *
      */
     private static void imprimirCabeceraMenuPrinc() {
 
-        final int LONG_LINEA = 60;
+        final int LONG_LINEA = 45;
 
         borrarPantalla();
 
         imprimirNChar(LONG_LINEA, '*');
 
-        System.out.println("1. Sumar");
-        System.out.println("2. Restar");
-        System.out.println("3. Multipicar");
-        System.out.println("4. Dividir");
-        System.out.println("5. Comprobar Restar");
-        System.out.println("6. Comprobar Dividir");
-        System.out.println("0. Salir");
+        System.out.println("\t1. Sumar");
+        System.out.println("\t2. Restar");
+        System.out.println("\t3. Multipicar");
+        System.out.println("\t4. Dividir");
+        System.out.println("\t5. Comprobar Restar");
+        System.out.println("\t6. Comprobar Dividir");
+        System.out.println("\t0. Salir");
 
         imprimirNChar(LONG_LINEA, '*');
     }
