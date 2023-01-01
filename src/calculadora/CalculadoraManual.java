@@ -342,7 +342,7 @@ public class CalculadoraManual {
                 multiplicacionParcial = sumar(multiplicacionParcial, multiplicando);
             }
 
-            System.out.printf("%d sumado consigo mismo %d %s es %d",
+            System.out.printf("%d sumado consigo mismo %d %s es %d,",
                     multiplicando, digitoMultiplicador, vezVeces, multiplicacionParcial);
             if (i != 0) {
                 System.out.printf(" desplazamos %d %s", i, posicionEs);
@@ -610,7 +610,7 @@ public class CalculadoraManual {
         
         esCorrectoStr = (resultadoRestar == diferencia) ?"CORRECTO" : "INCORRECTO";
         
-        System.out.printf("Esperado: %d, Obtenido: %d%n!%s¡%n%n", 
+        System.out.printf("Esperado con operador '-': %d, Obtenido con algoritmo: %d%n!%s¡%n%n", 
                 diferencia, resultadoRestar, esCorrectoStr);
     }
     
@@ -649,9 +649,11 @@ public class CalculadoraManual {
         esCorrectoCocStr = (cocienteCalc == cociente) ? "CORRECTO" : "INCORRECTO";
         esCorrectoResStr = (restoCalc == resto) ? "CORRECTO" : "INCORRECTO";
 
-        System.out.printf("Cociente esperado: %d, Cociente obtenido: %d%n!%s¡%n", 
+        System.out.printf("Cociente esperado con operador '/': %d, "
+                + "Cociente obtenido con algoritmo: %d%n!%s¡%n", 
                 cociente, cocienteCalc, esCorrectoCocStr);
-        System.out.printf("Cociente esperado: %d, Cociente obtenido: %d%n!%s¡%n%n", 
+        System.out.printf("Resto esperadoe esperado con operador '%': %d, "
+                + "Resto obtenido con algoritmo: %d%n!%s¡%n%n", 
                 resto, restoCalc, esCorrectoResStr);
     }
     
@@ -693,8 +695,8 @@ public class CalculadoraManual {
         System.out.println("\t2. Restar");
         System.out.println("\t3. Multipicar");
         System.out.println("\t4. Dividir");
-        System.out.println("\t5. Comprobar Resta");
-        System.out.println("\t6. Comprobar División");
+        System.out.println("\t5. Comprobar algoritmo de Resta");
+        System.out.println("\t6. Comprobar algotitmo de División");
         System.out.println("\t0. Salir");
 
         imprimirNChar(LONG_LINEA, '*');
@@ -742,7 +744,7 @@ public class CalculadoraManual {
         long operando = 0;
         boolean esNaturalShort = false;
         
-        System.out.printf("Introduzca el %s operando (1, %d): ", ordinal, Short.MAX_VALUE);
+        System.out.printf("Introduzca el %s (1, %d): ", ordinal, Short.MAX_VALUE);
 
         do {
             
@@ -794,8 +796,8 @@ public class CalculadoraManual {
 
                 case "1" -> {
                     borrarPantalla();
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("primer sumando");
+                    operando2 = introducirOperandoShort("segundo sumando");
                     
                     sumarMenu(operando1, operando2);
                     esperar();
@@ -803,8 +805,8 @@ public class CalculadoraManual {
                 
                 case "2" -> {          
                     borrarPantalla();
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("minuendo");
+                    operando2 = introducirOperandoShort("sustraendo");
                     
                     if (operando2 > operando1) {
                         System.out.println("\nLa operación devuelve un resultado negativo y no será procesada.\n");
@@ -816,8 +818,8 @@ public class CalculadoraManual {
                 
                 case "3" -> {
                     borrarPantalla();
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("primer factor");
+                    operando2 = introducirOperandoShort("segundo factor");
                     
                     multiplicarMenu(operando1, operando2);
                     esperar();
@@ -826,8 +828,8 @@ public class CalculadoraManual {
                 
                 case "4" -> {
                     borrarPantalla();
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("dividendo");
+                    operando2 = introducirOperandoShort("divisor");
                     
                     dividirMenu(operando1, operando2);
                     esperar();
@@ -835,16 +837,16 @@ public class CalculadoraManual {
                 }
                 
                 case "5" -> {
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("minuendo");
+                    operando2 = introducirOperandoShort("sustraendo");
                     
                     comprobarResta(operando1, operando2, operando1 - operando2);
                     esperar();
 
                 }
                 case "6" -> {
-                    operando1 = introducirOperandoShort("primer");
-                    operando2 = introducirOperandoShort("segundo");
+                    operando1 = introducirOperandoShort("dividendo");
+                    operando2 = introducirOperandoShort("divisor");
                     
                     comprobarDivision(operando1, operando2, operando1 / operando2, operando1 % operando2);
                     esperar();
