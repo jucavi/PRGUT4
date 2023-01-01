@@ -608,10 +608,11 @@ public class CalculadoraManual {
         
         int resultadoRestar = restar(minuendo, sustraendo);
         
-        esCorrectoStr = (resultadoRestar == diferencia) ?"CORRECTO" : "INCORRECTO";
+        esCorrectoStr = (resultadoRestar == diferencia) ? "CORRECTO" : "INCORRECTO";
         
-        System.out.printf("Esperado con operador '-': %d, Obtenido con algoritmo: %d%n!%s¡%n%n", 
-                diferencia, resultadoRestar, esCorrectoStr);
+        System.out.printf("%nResultado esperado con operador '-': %d%n", diferencia);
+        System.out.printf("Resultado obtenido con algoritmo:    %d%n",resultadoRestar);
+        System.out.println(esCorrectoStr);
     }
     
     /**
@@ -649,12 +650,12 @@ public class CalculadoraManual {
         esCorrectoCocStr = (cocienteCalc == cociente) ? "CORRECTO" : "INCORRECTO";
         esCorrectoResStr = (restoCalc == resto) ? "CORRECTO" : "INCORRECTO";
 
-        System.out.printf("Cociente esperado con operador '/': %d, "
-                + "Cociente obtenido con algoritmo: %d%n!%s¡%n", 
-                cociente, cocienteCalc, esCorrectoCocStr);
-        System.out.printf("Resto esperadoe esperado con operador '%': %d, "
-                + "Resto obtenido con algoritmo: %d%n!%s¡%n%n", 
-                resto, restoCalc, esCorrectoResStr);
+        System.out.printf("%nCociente esperado con operador '/': %d%n", cociente);
+        System.out.printf("Cociente obtenido con algoritmo:    %d%n", cocienteCalc);
+        System.out.printf("%s%n%n", esCorrectoCocStr);
+        System.out.printf("%nResto esperado con operador '%%': %d%n", resto);
+        System.out.printf("Resto obtenido con algoritmo:    %d%n", restoCalc);
+        System.out.printf("%s%n%n", esCorrectoResStr);
     }
     
     /**
