@@ -634,11 +634,8 @@ public class CalculadoraManual {
         String esCorrectoCocStr, esCorrectoResStr;
         
         if (dividendo >= divisor && divisor != 0) {
-//            try {
-//                cocienteCalc = dividir(dividendo, divisor);
-//            } catch (ArithmeticException e) {
-//                System.out.println(e);
-//            }
+//            cocienteCalc = dividir(dividendo, divisor);
+//            restoCalc = restar(dividendo, multiplicar(cocienteCalc, divisor));
             while (sumar(sumTemp, divisor) <= dividendo) {
                 sumTemp = sumar(sumTemp, divisor);
                 cocienteCalc = sumar(cocienteCalc,  1);
@@ -967,6 +964,6 @@ public class CalculadoraManual {
    public static void main(String[] args) {
         borrarPantalla();
         lanzarMenuPrincipal();
-        System.out.println("Hasta la vista!");
+        System.out.println("Hasta la vista!\n\n");
    }
 }
